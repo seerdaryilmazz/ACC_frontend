@@ -1,0 +1,801 @@
+<div *ngIf="companyInfo&&showDetail">
+    <div class="main-title">{{'CUSTOMER_DETAIL'| translate}}</div>
+    <nb-card class="pb-20">
+        <nb-card-header>
+            <div class="row">
+                <div class="col-md-2 align-self-center">
+                    <nb-icon icon="arrow-ios-back-outline" class="blue-icon back" (click)="backToList()"></nb-icon>
+                </div>
+                <div class="col-md-8 align-self-center text-center">
+                    <h6><strong>{{companyInfo.CompanyName}}</strong></h6>
+                </div>
+                <div class="col-md-2 align-self-center">
+                </div>
+            </div>
+        </nb-card-header>
+        <nb-tabset (changeTab)="onChangeTab($event)">
+            <nb-tab tabTitle="{{'GENERAL_UPPARCASE'|translate}}">
+                <div class="row">
+                    <div class="col-lg-8 col-md-7 col-sm-12 col-12">
+                        <div *ngIf="companyInfo.CompanyId" class="customer-info row">
+                            <div class="col-lg-3 col-md-6 col-sm-4 col-6">
+                                <p><strong> {{'CUSTOMER_ID'|translate}}: </strong></p>
+                            </div>
+                            <div class="col-lg-9 col-md-6 col-sm-8 col-6">
+                                <p>{{companyInfo.CompanyId}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="companyInfo.CompanySector" class="customer-info row">
+                            <div class="col-lg-3 col-md-6 col-sm-4 col-6">
+                                <p><strong>{{'CUSTOMER_SECTOR' | translate}}: </strong></p>
+                            </div>
+                            <div class="col-lg-9 col-md-6 col-sm-8 col-6">
+                                <p>{{companyInfo.CompanySector.toUpperCase() | translate}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="companyInfo.CompanyStatus && companyLocationInfo" class="customer-info row">
+                            <div class="col-lg-3 col-md-6 col-sm-4 col-6">
+                                <p><strong>{{'CUSTOMER_STATUS' | translate}}:</strong></p>
+                            </div>
+                            <div class="col-lg-9 col-md-6 col-sm-8 col-6">
+                                <p>{{companyInfo.CompanyStatus.toUpperCase() | translate}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="companyLocationInfo?.shortName" class="customer-info row">
+                            <div class="col-lg-3 col-md-6 col-sm-4 col-6">
+                                <p><strong>{{'LOCATION' | translate}}:</strong></p>
+                            </div>
+                            <div class="col-lg-9 col-md-6 col-sm-8 col-6">
+                                <p>{{companyLocationInfo.shortName}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="companyLocationInfo?.postaladdress?.formattedAddress"
+                            class="customer-info row">
+                            <div class="col-lg-3 col-md-6 col-sm-4 col-6">
+                                <p><strong>{{'ADDRESS' | translate}}:</strong></p>
+                            </div>
+                            <div class="col-lg-9 col-md-6 col-sm-8 col-6">
+                                <p>{{companyLocationInfo.postaladdress.formattedAddress}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="companyInfo.CompanyCountry" class="customer-info row">
+                            <div class="col-lg-3 col-md-6 col-sm-4 col-6">
+                                <p><strong>{{'COUNTRY' | translate }}:</strong></p>
+                            </div>
+                            <div class="col-lg-9 col-md-6 col-sm-8 col-6">
+                                <p>{{companyInfo.CompanyCountry.toUpperCase() | translate}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="companyLocationInfo" class="col-lg-4 col-md-5 col-sm-12 col-12 mobile-top">
+                        <div class="row">
+                            <div class="col-lg-6 col-6 mb-10">
+                                <h5>{{'CONTACTS' | translate}}</h5>
+                            </div>
+                            <div class="col-lg-6 col-6 mb-10">
+                                <button class="add" type="button" (click)="showAddContactModal()">
+                                    <nb-icon icon="plus-outline" class="add-icon"></nb-icon>{{'ADD' | translate}}
+                                </button>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="companyContacts.length>0">
+                            <div class="scroll-height">
+                                <div *ngFor="let companyContact of companyContacts" class="customer-card">
+                                    <p *ngIf="companyContact.fullname"><strong>{{'NAME_SURNAME' | translate}}:</strong>
+                                        {{companyContact.fullname}}
+                                    </p>
+                                    <p *ngIf="companyContact.title?.name"><strong>{{'TITLE' | translate}}:</strong>
+                                        {{companyContact.title.name.toUpperCase() | translate}}</p>
+                                    <p *ngIf="companyContact.department?.name">
+                                        <strong>{{'DEPARTMENT' | translate}}:</strong>
+                                        {{companyContact.department.name.toUpperCase() | translate}}</p>
+                                    <p *ngIf="companyContact.phoneNumbers.length>0">
+                                        <strong>{{'GSM' | translate}}:</strong>
+                                        {{companyContact.phoneNumbers[0].phoneNumber.countryCode}}{{companyContact.phoneNumbers[0].phoneNumber.regionCode}}{{companyContact.phoneNumbers[0].phoneNumber.phone}}
+                                    </p>
+                                    <p *ngIf="companyContact.emails.length>0"><strong>{{'E_MAIL' | translate}}:</strong>
+                                        {{companyContact.emails[0].email.emailAddress}}</p>
+                                    <button class="edit" type="button" (click)="showEditDialog(companyContact)">
+                                        <nb-icon icon="edit-outline" class="edit-icon"></nb-icon>{{'EDIT' | translate}}
+                                    </button>
+                                    <button class="delete" type="button"
+                                        (click)="deleteContactOpenModal(companyContact.id)">
+                                        <nb-icon icon="trash-2-outline" class="delete-icon"></nb-icon>{{'DELETE' | translate}}
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+            </nb-tab>
+
+            <nb-tab tabTitle="{{'FINANCE' | translate}}">
+                <div *ngFor="let model of financialInformationList">
+                <div class="customer-info row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                        <p><strong>{{'BUSINESS_AREA' | translate}}:</strong></p>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                        <p>{{model['BUSINESS_AREA'] | translate}}</p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                        <p><strong>{{'CURRENCY' | translate}}:</strong></p>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                        <p>{{model['CURRENCY']}}</p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                        <p><strong>{{'DEBIT_TOTAL' | translate}}:</strong></p>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                        <p>{{model['DEBIT_TOTAL']}} {{ getCurrencySign(model['CURRENCY'])}} </p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                        <p><strong>{{'DUE_EXPIRED_AMOUNT' | translate}}:</strong></p>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                        <p>{{model['DUE_EXPIRED_AMOUNT']}} {{ getCurrencySign(model['CURRENCY'])}}</p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                        <p><strong>{{'DUE_WAITING_AMOUNT' | translate}}:</strong></p>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                        <p>{{model['DUE_WAITING_AMOUNT']}} {{ getCurrencySign(model['CURRENCY'])}}</p>
+                    </div>
+                </div>
+                <hr *ngIf="financialInformationList.length>1">
+            </div>
+            </nb-tab>
+
+
+
+            <nb-tab *ngIf="companyLocationInfo" tabTitle="{{'ORDERS_UPPERCASE'|translate}}">
+                <app-selected-orders-comp #selectedOrders [companyId]="mappedId"></app-selected-orders-comp>
+            </nb-tab>
+
+            <nb-tab *ngIf="false" tabTitle="{{'PW_GRAPH' | translate}}">
+                <pw-graph [companyInfo]="companyInfo" [companyLocationInfo]="companyLocationInfo"></pw-graph>
+            </nb-tab>
+            
+            <nb-tab tabTitle="{{'VISITS_UPPERCASE'|translate}}">
+                <div style="overflow-x:auto;">
+                    <h4 class="sub-title text-center"><strong>{{'FUTURE_VISITS'|translate}}</strong></h4>
+                    <ngx-datatable [data]="futureVisits" (userRowSelect)="onVisitClick($event)" style="cursor:pointer">
+                        <ngx-datatable-column #columns title="DATE" value="Date" type="date"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="LOCATION" value="Location"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="INTERNAL_PARTICIPANT" value="InternalParticipants"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="EXTERNAL_PARTICIPANT" value="ExternalParticipants"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="SUBJECT" value="Subject"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="EXPLANATION" value="Content" [rendererComponent]="customRendererComponent"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="SUBJECT" value="Subject"></ngx-datatable-column>
+                    </ngx-datatable>
+
+                    <div class="mt-40">
+                        <h4 class="sub-title text-center"><strong>{{'PAST_VISITS'|translate}}</strong></h4>
+                        <ngx-datatable [data]="pastVisits" (userRowSelect)="onVisitClick($event)" style="cursor:pointer">
+                            <ngx-datatable-column #columns title="DATE" value="Date" type="date"></ngx-datatable-column>
+                            <ngx-datatable-column #columns title="LOCATION" value="Location"></ngx-datatable-column>
+                            <ngx-datatable-column #columns title="INTERNAL_PARTICIPANT" value="InternalParticipants"></ngx-datatable-column>
+                            <ngx-datatable-column #columns title="EXTERNAL_PARTICIPANT" value="ExternalParticipants"></ngx-datatable-column>
+                            <ngx-datatable-column #columns title="SUBJECT" value="Subject" ></ngx-datatable-column>
+                            <ngx-datatable-column #columns title="EXPLANATION" value="Content" [rendererComponent]="customRendererComponent"></ngx-datatable-column>
+                            <ngx-datatable-column #columns title="SUBJECT" value="Subject"></ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                </div>
+
+                <calendar-event #calendarEventComp (onUpdateCalendarEvent)="updateCalendarEvent($event)" (onDeleteCalendarEvent)="deleteActivity($event)"></calendar-event>
+            </nb-tab>
+
+            <nb-tab [tabTitle]="'AGREEMENTS' | translate">
+                <div *ngIf="!selectedAgreement">
+                    <ngx-datatable [data]="agreements" (userRowSelect)="selectedAgreement=$event.data" style="cursor:pointer">
+                        <ngx-datatable-column #columns title="AGREEMENT_NO" value="number"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="STATUS" value="status.code" [translate]="true"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="AGREEMENT_NAME" value="name"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="AGREEMENT_TYPE" value="type.code" [translate]="true"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="SERVICE_AREAS" value="serviceAreas" [customValueFunction]="renderServiceAreas" ></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="START/END_DATE" value="endDate" [customValueFunction]="renderStartEndDate"></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+                <div *ngIf="selectedAgreement">
+                    <div class="row">
+                        <div class="col-md-1 align-self-center">
+                            <nb-icon icon="arrow-ios-back-outline" class="blue-icon back" (click)="selectedAgreement=undefined"></nb-icon>
+                        </div>
+                        <div class="col-md-5 align-self-center">
+                            <h6 class="text-center">{{'AGREEMENT_NO' | translate}}: &nbsp;&nbsp;&nbsp; {{selectedAgreement.number}}</h6>
+                        </div>
+                        <div class="col-md-5 align-self-center">
+                            <h6 class="text-center">{{'STATUS' | translate}}: &nbsp;&nbsp;&nbsp; {{selectedAgreement.status.code | translate}} </h6>
+                        </div>
+                        <div class="col-md-1">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="container mt-20">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'AGREEMENT_TYPE'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{selectedAgreement.type.code | translate}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'AGREEMENT_NAME'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{selectedAgreement.name}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'SERVICE_AREAS'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p> 
+                                            <span *ngFor="let serviceArea of selectedAgreement.serviceAreas; last as isLast">
+                                                {{serviceArea.name | translate}}{{isLast ? '' : ', '}}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                    </div>
+                                    <div class="col-md-6">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'START_DATE'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{selectedAgreement.startDate}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'END_DATE'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{selectedAgreement.endDate}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'CREATED_AT'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{selectedAgreement.createdAt.substring(0, 10)}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'CREATED_BY'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{userList | findInArrayOfObjects: 'username': selectedAgreement.createdBy: 'displayName'}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="container mt-20">
+                        <h3 class="sub-title"><strong>{{'ATTACHMENTS'| translate}}:</strong></h3>
+                        <accordion *ngIf="selectedAgreement.documents" [isAnimated]="true" [closeOthers]="true">
+                            <accordion-group *ngFor="let doc of selectedAgreement.documents; index as i" (isOpenChange)="downloadDocument($event, doc)"
+                            heading="{{'ATTACHMENT' | translate | uppercase}} {{i+1}} - {{doc.documentName}} - {{doc.createDate | slice: 0: 10}} - {{userList | findInArrayOfObjects: 'username': doc.createdBy: 'displayName'}}">
+                                <div *ngIf="secureUrl">
+                                    <embed [src]="secureUrl" style="width:100%;height:842px;" [attr.type]="docType" [attr.title]="doc.documentName">
+                                </div>
+                            </accordion-group>
+                        </accordion>
+                        <p *ngIf="!selectedAgreement.documents">{{'NO_AGREEMENT_DOCUMENT' | translate}}</p>
+                    </div>
+                </div>
+            </nb-tab>
+            <nb-tab [tabTitle]="'OPPORTUNITIES' | translate">
+                <div *ngIf="!selectedOpportunity" class="row justify-content-between">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>{{'TIME_PERIOD' | translate}}</label>
+                            </div>
+                            <div class="col-md-12">
+                                <nb-select placeholder="{{'SELECT_PERIOD' | translate}}" [(ngModel)]="dateRangeValue" (selectedChange)="getOpportunities()">
+                                    <nb-option *ngFor="let dateRange of dateRangeList" [value]="dateRange.value">
+                                        {{dateRange.name | translate}}</nb-option>
+                                </nb-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 align-self-center">
+                        <button class="add" type="button" (click)="routeToCrm()">
+                            <nb-icon icon="plus-outline" class="add-icon"></nb-icon>{{'NEW_OPPORTUNITY' | translate}}
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="!selectedOpportunity">
+                    <ngx-datatable [data]="opportunities" (userRowSelect)="getOpportunityDetail($event)" style="cursor:pointer">
+                        <ngx-datatable-column #columns title="OPPORTUNITY_NO" value="number"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="OPPORTUNITY_NAME" value="name"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="EXPECTED_QUOTE_DATE" value="expectedQuoteDate"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="SERVICE_AREA" value="serviceArea.name" [translate]="true"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="STATUS" value="status.code" [translate]="true"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="CREATE_DATE" value="createdAt"></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+                <div *ngIf="selectedOpportunity">
+                    <div class="row">
+                        <div class="col-md-1 align-self-center">
+                            <nb-icon icon="arrow-ios-back-outline" class="blue-icon back" (click)="selectedOpportunity=undefined"></nb-icon>
+                        </div>
+                        <div class="col-md-5 align-self-center">
+                            <h6 class="text-center">{{'OPPORTUNITY_NO' | translate}}: &nbsp;&nbsp;&nbsp; {{selectedOpportunity.number}}</h6>
+                        </div>
+                        <div class="col-md-5 align-self-center">
+                            <h6 class="text-center">{{'STATUS' | translate}}: &nbsp;&nbsp;&nbsp; {{selectedOpportunity.status.code | translate}} </h6>
+                        </div>
+                        <div class="col-md-1">
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="container mt-20">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'OPPORTUNITY_NAME'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{selectedOpportunity.name}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'OPPORTUNITY_OWNER'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{userList | findInArrayOfObjects: 'username': selectedOpportunity.opportunityOwner : 'displayName'}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'ACCOUNT_LOCATION'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{selectedOpportunity.accountLocation.name}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'OWNER_SUBSIDIARY'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{selectedOpportunity.ownerSubsidiary.name | translate}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'SERVICE_AREA'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{selectedOpportunity.serviceArea.name | translate}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'CREATED_BY'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{userList | findInArrayOfObjects: 'username': selectedOpportunity.createdBy: 'displayName'}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong> {{'CREATE_DATE'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{selectedOpportunity.createdAt.substring(0, 10)}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    </div>
+                                    <div class="col-md-6">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col">
+                                        <p><strong> {{'EXPECTED_QUOTE_DATE'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col">
+                                        <p>{{selectedOpportunity.expectedQuoteDate}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p><strong> {{'EXPECTED_TURNOVER_PER_YEAR'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col">
+                                        <p>{{selectedOpportunity.expectedTurnoverPerYear?.amount | currency: selectedOpportunity.expectedTurnoverPerYear?.currency?.code}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col">
+                                        <p><strong> {{'QUOTED_TURNOVER_PER_YEAR'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col">
+                                        <p>{{selectedOpportunity.quotedTurnoverPerYear?.amount | currency: selectedOpportunity.quotedTurnoverPerYear?.currency?.code}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p><strong> {{'COMMITTED_TURNOVER_PER_YEAR'| translate}}: </strong></p>
+                                    </div>
+                                    <div class="col">
+                                        <p>{{selectedOpportunity.committedTurnoverPerYear?.amount | currency: selectedOpportunity.committedTurnoverPerYear?.currency?.code}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="container">
+                        <accordion [isAnimated]="true">
+                            <accordion-group class="accordion" [heading]="'PRODUCTS' | translate">
+                                <ngx-datatable [data]="selectedOpportunity.products" style="cursor:pointer">
+                                    <ngx-datatable-column #columns title="EXISTENCE_TYPE" value="existenceType.code" [translate]="true"></ngx-datatable-column>
+                                    <ngx-datatable-column #columns title="EXPECTED_TURNOVER_PER_YEAR" value="expectedTurnoverPerYear" [customValueFunction]="renderTurnover"></ngx-datatable-column>
+                                    <ng-container *ngIf="['AIR', 'ROAD', 'AIR', 'DTR', 'SEA'].includes(selectedOpportunity.serviceArea.code)">
+                                        <ngx-datatable-column #columns title="FROM_COUNTRY" value="fromCountry.name" [translate]="true"></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="FROM_POINT" value="fromPoint.name"></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="TO_COUNTRY" value="toCountry.name" [translate]="true"></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="TO_POINT" value="toPoint.name"></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="FREQUENCY" value="frequency"></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="FREQUENCY_TYPE" value="frequencyType.code" [translate]="true"></ngx-datatable-column>
+                                    </ng-container>
+                                    <ng-container *ngIf="'WHM' == selectedOpportunity.serviceArea.code">
+                                        <ngx-datatable-column #columns title="COUNTRY" value="country.name"></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="POINT" value="point.name"></ngx-datatable-column>
+                                    </ng-container>
+                                    <ng-container *ngIf="'CCL' == selectedOpportunity.serviceArea.code">
+                                        <ngx-datatable-column #columns title="CUSTOMS_SERVICE_TYPE" value="customsServiceType"></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="CUSTOMS_OFFICE" value="customsOffice.name"></ngx-datatable-column>
+                                    </ng-container>
+                                </ngx-datatable>
+                            </accordion-group>
+                            <accordion-group [heading]="'RELATED_QUOTES' | translate" (isOpenChange)="getOpportunityRelatedQuotes($event)">
+                                    <ngx-datatable [data]="relatedQuotes" style="cursor:pointer">
+                                        <ngx-datatable-column #columns title="QUOTE_NO" value="number"></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="QUOTE_NAME" value="name" ></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="QUOTE_TYPE" value="type.code" [translate]="true"></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="STATUS" value="status.code" [translate]="true"></ngx-datatable-column>
+                                        <ngx-datatable-column #columns title="CREATE_DATE" value="createdAt" [customValueFunction]="renderCreateDate"></ngx-datatable-column>
+                                    </ngx-datatable>
+                            </accordion-group>
+                        </accordion>
+                    </div>
+                </div>
+            </nb-tab>
+
+        </nb-tabset>
+        <hr>
+        <!--      <div class="col-12">
+            <div class="bottom-icon">
+                <button class="btn" type="button" (click)="open()">
+            <nb-action icon="message-circle-outline" class="green-icon"></nb-action>
+            </button> ß
+                <button class="btn" type="button">
+                    <nb-action icon="email-outline" class="yellow-icon"></nb-action>
+                </button>
+                <button class="btn" type="button">
+                    <nb-action icon="phone-call-outline" class="blue-icon"></nb-action>
+                </button>
+            </div>
+        </div> -->
+
+    </nb-card>
+
+    <ng-template #dialog let-data let-ref="dialogRef" style="overflow-y: auto;">
+        <nb-card class="dialog contactCard modal-area" style="overflow-y: auto;">
+            <nb-card-header>
+                <h5 *ngIf="!isCustomerEdit" class="text-center">{{'ADD_CONTACT'| translate}}</h5>
+                <h5 *ngIf="isCustomerEdit" class="text-center">{{'EDIT_CONTACT'| translate}}</h5>
+
+            </nb-card-header>
+            <nb-card-body>
+                <div class="row">
+                    <div class="col-12 mb-30">
+                        <nb-checkbox status="basic" [(ngModel)]="contact.active">{{'SET_AS_ACTIVE'| translate}}
+                        </nb-checkbox>
+                        <nb-checkbox status="basic" [(ngModel)]="contact.default">{{'SET_AS_DEFAULT'| translate}}
+                        </nb-checkbox>
+
+                    </div>
+
+                    <div class="col-12 mb-30">
+                        <label>{{'SEGMENTS' | translate}}*</label>
+                        <ngx-select-dropdown tabindex="0" [multiple]="true" [(ngModel)]="contact.companyServiceTypes"
+                            [options]="businessSegmentTypes" [config]="segmentTypeConfig"></ngx-select-dropdown>
+                        <p class="validation" *ngIf="buttonClicked && contact.companyServiceTypes.length==0">
+                            * {{'Provide_segment_type' | translate}} </p>
+                    </div>
+
+                    <ng-container [formGroup]="eventForm">
+                        <div class="col-4">
+                            <label>{{'GENDER' | translate}}*</label>
+                            <nb-select placeholder="Cinsiyet Seçiniz" [(ngModel)]="contact.gender.code"
+                                formControlName="genderControl">
+                                <nb-option *ngFor="let gender of genderList" [value]="gender.code">
+                                    {{gender.name.toUpperCase() | translate}}</nb-option>
+                            </nb-select>
+                            <p class="validation" *ngIf="buttonClicked && (contact.gender.code==undefined)">
+                                {{'PROVIDE_GENDER' | translate}} </p>
+
+                        </div>
+                        <div class="col-4">
+                            <label>{{'NAME' | translate}}*</label>
+                            <input type="text" [(ngModel)]="contact.firstName" nbInput fullWidth placeholder=""
+                                class="size-medium shape-rectangle" formControlName="nameControl">
+                            <p class="validation" *ngIf="nameControl.invalid && (buttonClicked || nameControl.touched)">
+                                * {{'PROVIDE_NAME' | translate}} </p>
+
+                        </div>
+                        <div class="col-4">
+                            <label>{{'SURNAME' | translate}}*</label>
+                            <input type="text" nbInput fullWidth placeholder="" [(ngModel)]="contact.lastName"
+                                class="size-medium shape-rectangle" formControlName="surnameControl">
+                            <p class="validation"
+                                *ngIf="surnameControl.invalid && (buttonClicked || surnameControl.touched)">*
+                                {{'PROVIDE_SURNAME' | translate}} </p>
+
+                        </div>
+                    </ng-container>
+                    <div class="col-4">
+                        <label>{{'LOCATION' | translate}}*</label>
+                        <input type="text" nbInput [(ngModel)]="contact.companyLocation.name" fullWidth
+                            class="size-medium shape-rectangle" disabled>
+                    </div>
+                    <div class="col-4">
+                        <label>{{'DEPARTMENT' | translate}}*</label>
+                        <nb-select [(ngModel)]="contact.department.code" placeholder="Departman seçiniz">
+                            <nb-option *ngFor="let department of contactDepartments" [value]="department.code">
+                                {{department.name.toUpperCase() | translate}}</nb-option>
+                        </nb-select>
+                        <p class="validation" *ngIf="buttonClicked && (contact.department.code==undefined)">*
+                            {{'PROVIDE_DEPARTMENT' | translate}} </p>
+
+                    </div>
+                    <div class="col-4">
+                        <label>{{'TITLE' | translate}}*</label>
+                        <nb-select placeholder="" [(ngModel)]="contact.title.code" placeholder="Title">
+                            <nb-option value="0">{{'SELECT' | translate}}</nb-option>
+                            <nb-option *ngFor="let contactTitle of contactTitles" [value]="contactTitle.code">
+                                {{contactTitle.name.toUpperCase() | translate}}</nb-option>
+                        </nb-select>
+                        <p class="validation"
+                            *ngIf="buttonClicked && (contact.title.code==undefined || contact.title.code==0)">*
+                            {{'PROVIDE_TITLE' | translate}} </p>
+
+                    </div>
+
+
+                    <div class="col-12 mt-20">
+                        <div class="table-area">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>{{'PHONE_NUMBER'| translate}}</strong>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <nb-icon icon="plus-outline" class="add-icon float-right"
+                                            (click)="addNumber=true"></nb-icon>
+                                    </div>
+                                </div>
+                            </div>
+                            <table>
+                                <tr>
+                                    <th>{{'TYPE' | translate}}</th>
+                                    <th>{{'USAGE' | translate}}</th>
+                                    <th>{{'IS_DEFAULT' | translate}}</th>
+                                    <th phone-width>{{'PHONE_NUMBER' | translate}}</th>
+                                    <th></th>
+                                </tr>
+                                <tr *ngIf="addNumber">
+                                    <td class="">
+                                        <nb-select placeholder="" [(selected)]="phoneNumber.numberType"
+                                            placeholder="{{'TYPE' | translate}}" class="select-max-width">
+                                            <nb-option value="0">{{'SELECT' | translate}}</nb-option>
+                                            <nb-option *ngFor="let phoneType of phoneTypes" [value]="phoneType">
+                                                {{phoneType.name.toUpperCase() | translate}}</nb-option>
+
+                                        </nb-select>
+                                    </td>
+                                    <td class="">
+                                        <nb-select placeholder="" placeholder="{{'USAGE' | translate}}" class="select-max-width"
+                                            [(selected)]="phoneNumber.usageType">
+                                            <nb-option value="0">{{'SELECT' | translate}}</nb-option>
+                                            <nb-option *ngFor="let usageType of usageTypes" [value]="usageType">
+                                                {{usageType.name.toUpperCase() | translate}}</nb-option>
+                                        </nb-select>
+                                    </td>
+                                    <td class="">
+                                        <nb-checkbox [(ngModel)]="phoneNumber.default"></nb-checkbox>
+                                    </td>
+                                    <td class="phone-width">
+                                        <div class="row">
+                                            <div class="phone-input-area">
+                                                <input type="text" nbInput [OnlyNumber]="true"
+                                                    [(ngModel)]="phoneNumber.phoneNumber.countryCode"
+                                                    placeholder="{{'COUNTRY_CODE' | translate }}"
+                                                    class="size-small shape-rectangle phone-input-1" maxlength="5">
+                                            </div>
+                                            <div class="phone-input-area">
+                                                <input type="text" nbInput [OnlyNumber]="true"
+                                                    [(ngModel)]="phoneNumber.phoneNumber.regionCode"
+                                                    placeholder="{{'REGION_CODE' | translate }}"
+                                                    class="size-small shape-rectangle phone-input-2" maxlength="5">
+                                            </div>
+                                            <div class="phone-input">
+                                                <input type="text" nbInput [OnlyNumber]="true"
+                                                    [(ngModel)]="phoneNumber.phoneNumber.phone"
+                                                    placeholder="{{'PHONE' | translate }}"
+                                                    class="size-small shape-rectangle phone-input-3">
+                                            </div>
+                                        </div>
+                                        <p class="table-p" *ngIf="showPhoneError">
+                                            {{'PHONE_NUMBER_FORMAT_ERROR' | translate}} </p>
+
+
+                                    </td>
+                                    <td>
+                                        <button nbButton name="" class="button button-green text-center"
+                                            (click)="addPhoneNumberToList()">{{'SAVE' | translate}}</button>
+                                    </td>
+                                </tr>
+
+                                <tr *ngFor="let savedPhoneNumber of contact.phoneNumbers">
+                                    <td>
+                                        {{savedPhoneNumber.numberType.name.toUpperCase() | translate}}
+                                    </td>
+                                    <td>
+                                        {{savedPhoneNumber.usageType.name.toUpperCase() | translate}}
+
+                                    </td>
+                                    <td>
+                                        <nb-checkbox [(ngModel)]="savedPhoneNumber.default" disabled></nb-checkbox>
+                                    </td>
+                                    <td>
+                                        {{savedPhoneNumber.phoneNumber.countryCode}}
+                                        {{savedPhoneNumber.phoneNumber.regionCode}}
+                                        {{savedPhoneNumber.phoneNumber.phone}}
+                                    </td>
+                                    <td>
+                                        <button name="" class="edit button button-yellow text-center"
+                                            (click)="editPhoneNumberFromList(savedPhoneNumber)">
+                                            <nb-icon icon="edit-outline" class="edit-icon"></nb-icon>
+                                            {{'EDIT' | translate}}
+                                        </button>
+                                        <button name="" class="delete button button-red text-center"
+                                            (click)="deletePhoneNumberFromList(savedPhoneNumber)">
+                                            <nb-icon icon="trash-2-outline" class="delete-icon"></nb-icon>
+                                            {{'DELETE' | translate}}
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-20">
+                        <div class="table-area">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>{{'E_MAIL' | translate}}</strong>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <nb-icon icon="plus-outline" class="add-icon float-right"
+                                            (click)="addEmail=true"></nb-icon>
+                                    </div>
+                                </div>
+                            </div>
+                            <table>
+                                <tr>
+                                    <th>{{'USAGE'| translate}}</th>
+                                    <th>{{'IS_DEFAULT'| translate}}</th>
+                                    <th>{{'E_MAIL' | translate}}</th>
+                                    <th></th>
+
+                                </tr>
+                                <tr *ngIf="addEmail">
+                                    <td>
+                                        <nb-select placeholder="" placeholder="{{'USAGE'| translate}}" [(selected)]="email.usageType">
+                                            <nb-option *ngFor="let usageType of usageTypes" [value]="usageType">
+                                                {{usageType.name.toUpperCase() | translate }}</nb-option>
+                                        </nb-select>
+                                    </td>
+                                    <td>
+                                        <nb-checkbox [(ngModel)]="email.default"></nb-checkbox>
+                                    </td>
+                                    <td>
+                                        <input type="text" nbInput [(ngModel)]="email.email.emailAddress" fullWidth
+                                            placeholder="Email" class="size-medium shape-rectangle">
+                                        <p class="table-p" *ngIf="showEmailError">{{'EMAIL_FORMAT_ERROR' | translate}}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <button nbButton name="" class="button button-green text-center"
+                                            (click)="addEmailtoList()">{{'SAVE' | translate}}</button>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let savedEmail of contact.emails">
+                                    <td>
+                                        {{savedEmail.usageType?.name.toUpperCase() | translate}}
+                                    </td>
+                                    <td>
+                                        <nb-checkbox [(ngModel)]="savedEmail.default" disabled></nb-checkbox>
+                                    </td>
+                                    <td>
+                                        {{savedEmail.email.emailAddress}}
+                                    </td>
+                                    <td>
+                                        <button name="" class="edit button button-yellow text-center" (click)="editMailFromList(savedEmail)">
+                                            <nb-icon icon="edit-outline" class="edit-icon"></nb-icon>
+                                            {{'EDIT' | translate}}
+                                        </button>
+                                        <button name="" class="delete button button-red text-center"
+                                            (click)="deleteEmailFromList(savedEmail)">
+                                            <nb-icon icon="trash-2-outline" class="delete-icon"></nb-icon>
+                                            {{'DELETE' | translate}}
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <button nbButton name="" class="button button-green text-center mt-30"
+                            (click)="saveContact()">{{'SAVE' | translate}}</button>
+                        <button nbButton name="" class="button button-red text-center mt-30"
+                            (click)="closeModal()">{{'CLOSE' | translate}}</button>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </ng-template>
+</div>
+
+<ngx-dialog #informationModal parentPage='customerDetail' (runMethod)="deleteContact($event)"></ngx-dialog>
+<ngx-dialog #calendarInformation parentPage='customerDetail'></ngx-dialog>

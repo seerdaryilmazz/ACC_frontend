@@ -1,0 +1,38 @@
+<div class="main-title">{{'NOTIFICATIONS' | translate}}</div>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-20 pb-20">
+    <nb-card-body>
+        <div *ngIf="notifications.length > 0">
+            <div style="float: right;">
+                <span class="read-all" (click)="markAllRead()">{{'MARK_ALL_AS_READ' | translate}}</span>
+            </div>
+            <table class="table table-bordered table-hover">
+                <!-- <thead>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </thead> -->
+                <tbody>
+                    <tr *ngFor="let not of notifications | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize"
+                    [style.font-weight]="!not.Read ? 900 : 400">
+                        <td class="content" (click)="notificationClick(not)">{{not.Content}}</td>
+                        <td class="date" >{{not.CreatedAt | date: 'dd.MM.yyyy HH:mm'}}</td>
+                        <td class="button">
+                            <a *ngIf="!not.Read" (click)="readNotification(not)" style="cursor: pointer;">
+                                <igx-icon>drafts</igx-icon>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-center">
+                <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="notifications.length"></ngb-pagination>
+            </div>
+        </div>
+        <div *ngIf="notifications.length == 0">
+            <p>{{'NO_NOTIFICATIONS' | translate}}</p>
+        </div>
+        <!-- <ngx-datatable [data]="data">
+            <ngx-datatable-column #columns title="TITLE" value="title"></ngx-datatable-column>
+        </ngx-datatable> -->
+    </nb-card-body>
+</nb-card>

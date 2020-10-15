@@ -1,0 +1,75 @@
+
+
+.full-name-inputs,
+.validation-checkboxes {
+  display: flex;
+  margin: 0 -0.5rem;
+
+  > * {
+    margin: 0 0.5rem;
+  }
+}
+
+.checkbox-radio {
+  display: flex;
+}
+
+.demo-items {
+  flex: 1 0 33%;
+}
+
+
+span.bold{
+  font-weight: 700;
+}
+.list-title{
+  background: #fff;
+}
+.searh-area .shape-rectangle{
+  margin-bottom: 5px !important;
+}
+p.small{
+  font-size: 13px;
+  color: #777;
+}
+.gray-bg{
+  background: #ebeff6;
+  box-shadow: 0 0 0 0;
+}
+
+.order-area label{
+  margin-right: 10px;
+}
+
+table a{
+  color: #00aef0;
+}
+
+.back nb-icon{
+  margin-bottom: 20px;
+  font-size: 40px !important;
+}
+button.danger{
+  background:#FF5252;
+  color: #fff;
+  padding: 4px 10px 6px 8px;
+  border:1px solid transparent;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.dialog .customer-info p{
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+}
+.dialog .customer-info p.title{
+  font-weight: 500 !important;
+  color: #00aef0 !important;
+}
+.dialog h6{
+  font-size: 17px;
+}
+.dialog nb-card-body {
+  min-width: 300px !important;
+}

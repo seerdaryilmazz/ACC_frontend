@@ -1,0 +1,13 @@
+
+.datePicker ::ng-deep .igx-input-group .igx-input-group__bundle {
+    padding-top: 0px !important;
+    z-index: auto !important;
+}
+
+.datePicker ::ng-deep .igx-input-group .igx-input-group__bundle .igx-input-group__bundle-main .igx-input-group__label {
+    padding: 5.5px;
+}
+
+igx-date-picker + igx-date-picker {
+    margin-top: 8px;
+}

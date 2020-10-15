@@ -1,0 +1,85 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <!-- <ng-select [items]="taskUserAccountOptions | async" [virtualScroll]="true" bindLabel="AccountName"
+                formControlName="TaskCustomerAccount" [placeholder]="'SELECT_CUSTOMER' | translate" [loading]="accountsLoading"
+                appearance="outline" [minTermLength]="3" [typeToSearchText]="'3_OR_MORE_CHARS' | translate"
+                [typeahead]="accountInput" (change)="onAccountChange($event)">
+            </ng-select> -->
+            <!-- <ng-select [items]="countryOptions" [(ngModel)]="countryFilter" (change)="onSubjectChange($event)"
+                [placeholder]="'SELECT_COUNTRY' | translate" appearance="outline">
+                <ng-template ng-option-tmp ng-label-tmp let-item="item">
+                    {{ item | translate }}
+                </ng-template>
+            </ng-select> -->
+            <ng-select [items]="countryOptions" [(ngModel)]="countryFilter" [placeholder]="'COUNTRY' | translate"
+                appearance="outline" [multiple]="true" (clear)="countryFilter=undefined" bindValue="iso" [searchFn]="searchFn('name')">
+                <ng-template ng-option-tmp ng-label-tmp let-item="item">
+                    {{ item.name | translate }}
+                </ng-template>
+            </ng-select>
+        </div>
+        <div class="col-md-4">
+            <ng-select [items]="locationOptions" [(ngModel)]="locationFilter" [placeholder]="'LOCATION' | translate"
+                appearance="outline" bindLabel="name" (clear)="locationFilter=undefined" [disabled]="this.locationOptions.length == 1">
+            </ng-select>
+        </div>
+        <div class="col-md-4">
+            <ng-select [items]="periodOptions" [(ngModel)]="periodFilter" [placeholder]="'TIME_PERIOD' | translate"
+                appearance="outline" (clear)="periodFilter=undefined" [searchFn]="searchFn()">
+                <ng-template ng-option-tmp ng-label-tmp let-item="item">
+                    {{ item | translate }}
+                </ng-template>
+            </ng-select>
+        </div>
+        <div class="col-md-4">
+            <ng-select [items]="fullTruckOptions" [(ngModel)]="fullTruckFilter" [placeholder]="'TRUCK_LOADING' | translate"
+                appearance="outline" [multiple]="true" (clear)="fullTruckFilter=undefined">
+            </ng-select>
+        </div>
+        <div class="col-md-4">
+            <ng-select [items]="serviceGroupOptions" [(ngModel)]="serviceGroupFilter" [placeholder]="'SERVICE_GROUP' | translate"
+                appearance="outline" [multiple]="true" (clear)="serviceGroupFilter=undefined" [searchFn]="searchFn()">
+                <ng-template ng-option-tmp ng-label-tmp let-item="item">
+                    {{ item | translate }}
+                </ng-template>
+            </ng-select>
+        </div>
+        <div class="col-md-4">
+            <ng-select [items]="orderTypeOptions" [(ngModel)]="orderTypeFilter" [placeholder]="'ORDER_TYPE' | translate"
+                appearance="outline" [multiple]="true" (clear)="orderTypeFilter=undefined" [searchFn]="searchFn('name')">
+                <ng-template ng-option-tmp ng-label-tmp let-item="item">
+                    {{ item.name | translate }}
+                </ng-template>
+            </ng-select>
+        </div>
+        <div class="col-md-4 mx-auto mt-5">
+            <igx-date-picker class="date-picker" locale="tr" [(ngModel)]="startDateFilter" [cancelButtonLabel]="'CLOSE' | translate"
+                [label]="'START_DATE' | translate" [hideOutsideDays]="true" id="startDate" [monthsViewNumber]="1"></igx-date-picker>
+        </div>
+        <div class="col-md-4 mx-auto mt-5">
+            <igx-date-picker class="date-picker" locale="tr" [(ngModel)]="endDateFilter" [cancelButtonLabel]="'CLOSE' | translate"
+                [label]="'END_DATE' | translate" [hideOutsideDays]="true" id="startDate" [monthsViewNumber]="1"></igx-date-picker>
+        </div>
+        <div class="col-md-4 mt-5">
+        </div>
+    </div>
+    <div class="row align-items-center text-center mt-20">
+        <div class="col-md-6">
+            <p><strong> {{'TOTAL_PAYWEIGHT' | translate}}: </strong> {{totalPayweight | number}}</p>
+        </div>
+        <div class="col-md-6">
+            <button class="mb-0" nbButton (click)="drawGraph()">{{"DRAW_GRAPH" | translate}}</button>
+        </div>
+    </div>
+    <div class="row mt-50">
+        <div *ngIf="graphData" class="m-auto">
+            <ngx-charts-line-chart [view]="[750,400]" [showXAxisLabel]="true"
+                [showYAxisLabel]="true" [xAxis]="true" [yAxis]="true" [xAxisLabel]="'DATE' | translate"
+                [scheme]="colorScheme"
+                yAxisLabel="Payweight" [timeline]="true" [results]="graphData">
+            </ngx-charts-line-chart>
+        </div>
+    </div>
+</div>
+

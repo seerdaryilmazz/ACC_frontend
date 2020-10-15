@@ -1,0 +1,185 @@
+<div class="main-title">{{'COMPLAINTS'|translate}}</div>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-20 pb-20">
+    <nb-card-body>
+        <div class="new" style="float: right;" *ngIf="!showDetail">
+            <button class="add" type="button" (click)="newEventModalOpen()">
+                <nb-icon icon="plus-outline" class="add-icon"></nb-icon>{{'NEW_COMPLAINT' | translate}}
+            </button>
+        </div>
+        <div class="back" *ngIf="!showDetail">
+            <nb-icon icon="arrow-ios-back-outline" class="blue-icon" [routerLink]="['/pages/task/task-page']"></nb-icon>
+        </div>
+
+        <div class="table-search searh-area mb-30" *ngIf="!showDetail">
+            <input #search nbInput fullWidth class="search size-medium shape-rectangle" type="text"
+                placeholder="{{'SEARCH_INPUT_PLACE_HOLDER'|translate}}" (keyup)="onSearch(search.value)">
+            <span class="input-group-btn">
+                <button class="btn" type="button" (click)="onSearch(search.value)">
+                    <nb-action icon="search-outline" class="search-blue-icon"></nb-action>
+                </button>
+            </span>
+            <div class="table-small-text">
+                <p class="small">*{{'COMPLAINT_SEARCH_INFO'|translate}}.</p>
+            </div>
+        </div>
+        <div class="order-area">
+            <div style="overflow-x:auto;">
+                <ngx-datatable *ngIf="!showDetail" [searchQuery]="searchQuery" [data]="relatedComplaints" (userRowSelect)="userRowSelect($event)" style="cursor:pointer;">
+                    <ngx-datatable-column #columns title="CUSTOMER" value="ComplaintCustomerAccountName" [search]="true"></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="COMPLAINT_TYPE" value="TranslatedComplaintType" [search]="true"></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="COMPLAINT_SUBJECT" value="ComplaintSubject" [search]="true"></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="COMPLAINT_DUE_DATE" value="FormattedComplaintDueDate" ></ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </div>
+        <div class="order-detail" *ngIf="showDetail">
+            <div class="back">
+                <nb-icon icon="arrow-ios-back-outline" class="blue-icon" (click)="showDetail=false; selectedComplaint = undefined"></nb-icon>
+            </div>
+            <button class="edit mb-30" type="button" (click)="showEditDialog(selectedComplaint)">
+                <nb-icon icon="edit-outline" class="edit-icon"></nb-icon>{{'EDIT' | translate}}
+            </button>
+            <table>
+                <tr>
+                    <th>{{'CUSTOMER'|translate}}</th>
+                    <th>{{'COMPLAINT_SUBJECT'|translate}}</th>
+                    <th>{{'COMPLAINT_TYPE'|translate}}</th>
+                    <th>{{'OG'|translate}}</th>
+                    <th>{{'PRIORITY'|translate}}</th>
+                    <th>{{'COMPLAINT_STATUS'|translate}}</th>
+
+                </tr>
+                <tr>
+                    <td>{{selectedComplaint.ComplaintCustomerAccountName}}</td>
+                    <td>{{selectedComplaint.ComplaintSubject}}</td>
+                    <td>{{selectedComplaint.ComplaintType | translate}}</td>
+                    <td>{{selectedComplaint.ComplaintDueDate | date:'dd.MM.yyyy'}}</td>
+                    <td>
+                        <div style="margin:0 auto"
+                            [ngClass]="{'circle-red': selectedComplaint.Priority=='HIGH', 'circle-yellow': selectedComplaint.Priority=='MEDIUM', 'circle-green': selectedComplaint.Priority=='LOW'}">
+                        </div>
+                    </td>
+                    <td>
+                        <nb-select placeholder="{{'COMPLAINT_TYPE' | translate}}"
+                            [ngModel]="selectedComplaint.ComplaintSolved"
+                            (ngModelChange)="onComplaintStatusChanged($event)" class="mb-0">
+                            <nb-option [value]=false> {{"NOT_SOLVED" | translate}} </nb-option>
+                            <nb-option [value]=true> {{"SOLVED" | translate}} </nb-option>
+                        </nb-select>
+                    </td>
+                </tr>
+            </table>
+            <div class="customer-info row pt-30">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'EXPLANATION'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedComplaint.ComplaintDescription}}</p>
+                </div>
+            </div>
+            <div class="customer-info row" *ngIf="selectedComplaint.ComplaintSolved">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'SOLVED_COMPLAINT_DESCRIPTION'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p> {{selectedComplaint.ComplaintSolvedDescription}} </p>
+
+                </div>
+            </div>
+            <hr>
+        </div>
+    </nb-card-body>
+</nb-card>
+<ng-template #dialog2 let-data let-ref="dialogRef2">
+    <nb-card class="dialog calendar text-center" style="width: 400px;">
+        <nb-card-header>
+            <h2> {{"SOLVE_COMPLAINT" | translate}} </h2>
+        </nb-card-header>
+
+        <nb-card-body>
+            <div class="row col-12">
+                <textarea [(ngModel)]="complaintSolvedDescription" nbInput fullWidth rows="4"
+                    class="size-medium shape-rectangle" placeholder="{{'DESCRIPTION' | translate}}"></textarea>
+                <p class="validation pt-20" *ngIf="complaintSolvedDescription.length == 0">
+                    * {{"Provide_description" | translate}}</p>
+
+            </div>
+        </nb-card-body>
+        <nb-card-footer>
+            <button nbButton [disabled]="complaintSolvedDescription.length == 0"
+                (click)="saveComplaintSolved()">{{"SAVE" | translate}}</button>
+            <button nbButton (click)="dialogRef2.close()">{{"CLOSE" | translate}}</button>
+        </nb-card-footer>
+    </nb-card>
+
+</ng-template>
+
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <form [formGroup]="complaintForm">
+        <nb-card class="dialog calendar text-center">
+            <nb-card-header *ngIf="isNewComplaint">
+                <h2> {{"Add_New_Complaint" | translate}} </h2>
+            </nb-card-header>
+            <nb-card-header *ngIf="!isNewComplaint">
+                <h2> {{"UPDATE_COMPLAINT" | translate}} </h2>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="row" *ngFor="let alert of alertsCard">
+                    <ngb-alert [type]="alert.type" (close)="close()">{{ alert.msg }}</ngb-alert>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <input type="text" name="header" formControlName="complaintTitleControl" nbInput fullWidth
+                            placeholder="{{'Header' | translate}}" class="size-medium shape-rectangle"
+                            [(ngModel)]="complaintTitle">
+                        <p class="validation" *ngIf="complaintTitleControl.invalid && complaintTitleControl.touched">*
+                            {{"Provide_header" | translate}} </p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <ngx-select-dropdown formControlName="complaintCustomerControl" tabindex="0" [multiple]="false"
+                            [(ngModel)]="complaintCustomerAccount" [options]="userAccounts"
+                            [config]="userAccountsConfig">
+                        </ngx-select-dropdown>
+                        <p class="validation" *ngIf="(buttonClicked && complaintCustomerAccount==undefined)">*
+                            {{"Provide_customer" | translate}}</p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <nb-select id="eventType" formControlName="complaintTypeControl"
+                            placeholder="{{'COMPLAINT_TYPE' | translate}}" [(ngModel)]="selectedComplaintType">
+                            <nb-option [value]="0"> {{"SELECT" | translate}} </nb-option>
+                            <nb-option *ngFor="let complaint of complaintTypes" [value]="complaint.name">
+                                {{complaint.name.toUpperCase() | translate}} </nb-option>
+                        </nb-select>
+                        <p class="validation"
+                            *ngIf="(buttonClicked) && (selectedComplaintType==undefined || selectedComplaintType==0)">
+                            * {{"Provide_complaint_type" | translate}}</p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <igx-date-picker locale="tr" #editable formControlName="complaintDueDateControl"
+                            [cancelButtonLabel]="'CLOSE' | translate" [(ngModel)]="complaintDueDate" [hideOutsideDays]="true"
+                            [monthsViewNumber]="1" format="longDate"></igx-date-picker>
+
+                    </div>
+                    <div class="col-md-12 col-12">
+                        <textarea formControlName="complaintDescControl" nbInput fullWidth
+                            placeholder="{{'Description' | translate}}" rows="4" class="size-medium shape-rectangle"
+                            [(ngModel)]="complaintDescription"></textarea>
+                        <p class="validation"
+                            *ngIf="(complaintDescControl.invalid && complaintDescControl.touched) || (complaintDescControl.invalid && buttonClicked)">
+                            * {{"Provide_description" | translate}}</p>
+                    </div>
+                </div>
+            </nb-card-body>
+            <nb-card-footer>
+                <button nbButton *ngIf="isNewComplaint" (click)="saveComplaint()">{{"SAVE" | translate}}</button>
+                <button nbButton *ngIf="!isNewComplaint" (click)="saveComplaint()">{{"UPDATE" | translate}}</button>
+                <!-- <button nbButton (click)="ref.close()">KAPAT</button> -->
+                <button nbButton (click)="close()">{{"CLOSE" | translate}}</button>
+            </nb-card-footer>
+        </nb-card>
+    </form>
+</ng-template>
+
+<ngx-dialog #informationModal></ngx-dialog>

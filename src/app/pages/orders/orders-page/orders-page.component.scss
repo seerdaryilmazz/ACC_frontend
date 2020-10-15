@@ -1,0 +1,36 @@
+.full-name-inputs,
+.validation-checkboxes {
+  display: flex;
+  margin: 0 -0.5rem;
+
+  > * {
+    margin: 0 0.5rem;
+  }
+}
+
+.checkbox-radio {
+  display: flex;
+}
+
+.demo-items {
+  flex: 1 0 33%;
+}
+
+.orders-container nb-card{
+  border:1px solid #eee;
+}
+.searh-area .shape-rectangle{
+  margin-bottom: 5px !important;
+}
+p.small{
+  font-size: 13px;
+  color: #777;
+}
+button.danger{
+  background:#FF5252;
+  color: #fff;
+  padding: 4px 10px 6px 8px;
+  border:1px solid transparent;
+  border-radius: 3px;
+  margin-right: 10px;
+}

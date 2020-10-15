@@ -1,0 +1,130 @@
+<div class="main-title">{{'ORDERS_ADDED_EXTRA_CHARGED'|translate}}</div>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-20 pb-20">
+    <nb-card-body>     
+        <div class="back" *ngIf="!showDetail">
+            <nb-icon icon="arrow-ios-back-outline" class="blue-icon" [routerLink]="['/pages/task/task-page']"></nb-icon>
+        </div>
+        <div class="row">    
+        <div class="table-search searh-area mb-30" *ngIf="!showDetail">
+            <input #search nbInput fullWidth class="search size-medium shape-rectangle" type="text" placeholder="{{'SEARCH_INPUT_PLACE_HOLDER'|translate}}" (keyup)="onSearch(search.value)">
+            <span class="input-group-btn">
+                <button class="btn" type="button" (click)="onSearch(search.value)">
+                    <nb-action icon="search-outline" class="search-blue-icon"></nb-action>
+                </button>
+            </span>
+            <div class="table-small-text">
+                <p class="small">*{{'CUSTOMER_SEARCH_INFO'|translate}}.</p>
+            </div>
+        </div>
+        <div class="siparis-select" *ngIf="!showDetail" >
+            <div class="col-md-12">
+                <label>{{'TIME_PERIOD' |translate}}</label>
+            </div>
+            <div class="col-md-12">
+                <nb-select placeholder="Aralık Seçiniz" [ngModel]="dateRangeValue" (ngModelChange)="getExpenseOrders($event)">
+                    <nb-option *ngFor="let dateRange of dateRangeList" [value]="dateRange.value">
+                        {{dateRange.name | translate}}</nb-option>
+                </nb-select>
+            </div>
+        </div>   </div> 
+        <div class="order-area">
+            <div class="table-td-right" style="overflow-x:auto;">
+                <ngx-datatable *ngIf="!showDetail" [data]="expenseOrders" [searchQuery]="searchQuery" (userRowSelect)="userRowSelect($event)" style="cursor:pointer;">
+                    <ngx-datatable-column #columns title="ORDER_NO" value="OrderNo" [search]="true"></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="COST_DATE" value="ExpenseDate" ></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="CUSTOMER" value="CustomerName" [search]="true"></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="COST_AMOUNT" value="ExpensePrice" ></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="COST_REASON" value="ExpenseReason" ></ngx-datatable-column>
+                </ngx-datatable>
+            </div>               
+        </div>
+        <div class="order-detail" *ngIf="showDetail">
+            <div class="back">
+                <nb-icon icon="arrow-ios-back-outline" class="blue-icon" (click)="showDetail=false;"></nb-icon>
+            </div>
+            <table>
+                <tr>
+                  <th>{{'ORDER_NO'|translate}}</th>
+                  <th>{{'CUSTOMER'|translate}}</th>
+                  <th>{{'COST_AMOUNT'|translate}}</th>
+                  <th>{{'COST_REASON'|translate}}</th>
+                  <th>{{'PRIORITY'|translate}}</th>
+                </tr>
+                <tr style="cursor: pointer;" (click)="showOrderDetailModal()">
+                  <td>{{selectedOrder.OrderNo}}</td>
+                  <td>{{selectedOrder.CustomerName}}</td>
+                  <td style="text-align: right;">{{selectedOrder.ExpensePrice}}</td>
+                  <td>{{selectedOrder.ExpenseReason}}</td>
+                  <td><div class="circle-blue"></div></td>
+                </tr>
+            </table>           
+            <div class="customer-info row pt-30">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'COST_DATE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.ExpenseDate}}</p>
+                </div>
+            </div>        
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'EXPENSE_COMPANY' | translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.ExpenseCompany}}</p>
+                </div>
+            </div>
+            <!--<div class="customer-info row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>Alınacak Aksiyon:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>Müşteriden evrak talep et</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>Alınacak Aksiyon:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>Evrak talep edildi</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>Muhatap:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>Araç sorumlusu</p>
+                </div>
+            </div>-->
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'EXPLANATION'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.ExpenseDescription}}</p>
+                </div>
+            </div>
+            <div class="customer-info row pt-10">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p class="pt-10"><strong>{{'STATUS'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.ExpenseStatus}}</p>
+                </div>
+            </div>
+            <!--<div class="customer-info row pt-10">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <button nbButton name="" class="button button-green">KAYDET</button>
+                </div>
+            </div>-->
+            <hr>
+<!--             <app-communication-comp></app-communication-comp>
+ -->        </div>
+    </nb-card-body>
+</nb-card>
+
+<ng-template #orderDetailModal let-data let-ref="dialogRef" style="overflow-y: auto;">
+    <specific-order-component #specificOrderComponent [orderCode]="selectedOrder.OrderNo"></specific-order-component>
+</ng-template>

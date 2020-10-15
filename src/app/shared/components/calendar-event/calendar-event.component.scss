@@ -1,0 +1,48 @@
+
+::ng-deep .igx-date-picker .igx-calendar__header {
+    background: #00a7e6;
+}
+
+::ng-deep .igx-calendar__date--selected .igx-calendar__date-content {
+    background: #00a7e6;
+}
+
+::ng-deep .igx-calendar__date--selected.igx-calendar__date--current .igx-calendar__date-content {
+    background: #00a7e6;
+}
+
+::ng-deep nb-checkbox .label .text {
+    font-family: Poppins, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+i.flip {
+    float: right;
+}
+
+button {
+    height: 40px;
+}
+
+nb-card.scroll {
+    overflow: hidden scroll;
+}
+
+button.accordion-edit-button {
+    height: 20px;
+    padding: 1px 6px !important;
+    margin-bottom: 0px !important;
+}
+
+nb-card .card {
+    margin-bottom: 0px;
+}
+
+.flip-card {
+    width: 700px;
+}
+
+::ng-deep nb-dialog-container {
+    overflow: hidden auto;
+}

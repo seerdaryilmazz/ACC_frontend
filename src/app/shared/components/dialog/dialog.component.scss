@@ -1,0 +1,52 @@
+
+.modal.show .modal-dialog .modal-body {
+  p {
+    color: #333 !important;
+    margin: 5px !important;
+  }
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 1127;
+}
+
+.btn-green {
+  background-color: #28a745 !important;
+  color: #ffffff;
+  padding: 6px 10px !important;
+}
+
+.btn-gray {
+  background-color: #aaa !important;
+  color: #ffffff;
+  padding: 6px 10px !important;
+
+}
+
+.btn-blue {
+  background: #0095ff;
+  color: #ffffff;
+  padding: 6px 10px !important;
+}
+
+.btn-yellow{
+  background: #ffaa00;
+  color: #ffffff;
+  padding: 6px 10px !important;
+}
+
+.modal-header{
+  padding: 5px 10px !important;
+}
+
+@media only screen and (min-width:500px){
+  .modal-dialog {
+    max-width: 500px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .modal.show .modal-dialog .modal-body .change-delivery-time {
+    font-size: 16px;
+  }
+}

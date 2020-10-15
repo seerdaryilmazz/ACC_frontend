@@ -1,0 +1,11 @@
+.date-picker ::ng-deep .igx-input-group {
+    z-index: 1;
+}
+
+ng-select {
+    padding-bottom: 0px;
+}
+
+::ng-deep ng-select .ng-dropdown-panel {
+    margin-top: 1.25em !important;
+}

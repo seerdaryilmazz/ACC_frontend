@@ -1,0 +1,9 @@
+<igx-date-picker class="datePicker" locale="tr" [cancelButtonLabel]="'CLOSE' | translate" [todayButtonLabel]="'TODAY' | translate" 
+monthsViewNumber="1" [hideOutsideDays]="true" [label]="firstLabel || 'From'" mask="dd.MM.yyyy" format="dd.MM.yyyy"
+    [value]="firstDate" (valueChange)="onFirstDateChange($event)">
+</igx-date-picker>
+
+<igx-date-picker class="datePicker" locale="tr" [cancelButtonLabel]="'CLOSE' | translate" [todayButtonLabel]="'TODAY' | translate" 
+monthsViewNumber="1" [hideOutsideDays]="true" [label]="secondLabel || 'To'" mask="dd.MM.yyyy" format="dd.MM.yyyy"
+    [value]="secondDate" (valueChange)="onSecondDateChange($event)">
+</igx-date-picker>

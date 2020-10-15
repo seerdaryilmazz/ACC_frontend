@@ -1,0 +1,405 @@
+<!-- <div class="main-title">PRELOST MÜŞTERİLERİM</div>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-20 pb-20" *ngIf="!showDetail">
+    <nb-card-body> 
+        <div class="back" *ngIf="!showDetail">
+            <nb-icon icon="arrow-ios-back-outline" class="blue-icon" [routerLink]="['/pages/task/task-page']"></nb-icon>
+        </div>     
+        
+        <div class="prelost"> 
+            <div class="">
+                    <div class="address-info-container">
+                        <div class="address-info-list list-title">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-3 col-5">
+                                    <span class="bold">No</span>
+                                </div>
+                                <div class="col-md-3 col-sm-4 col-5">
+                                    <span class="bold">Müşteri Adı</span> 
+                                </div>
+                                <div class="col-md-3 col-sm-4 d-sm-block d-md-block d-lg-block d-none">
+                                    <span class="bold">Sektör</span>
+                                </div>
+                                <div class="col-md-3 col-sm-5 col-5 d-sm-none d-md-block d-lg-block d-none">
+                                    <span class="bold">Telefon</span>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-1">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="address-info-list">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-3 col-5">
+                                    <nb-icon icon="chevron-down-outline" class="icon-strong" (click)="table1=!table1;"></nb-icon>
+                                    <span class="right-text">12345</span>
+                                </div>
+                                <div class="col-md-3 col-sm-4 col-5">
+                                    <span>Ford</span>
+                                </div>
+                                <div class="col-md-3 col-sm-4 d-sm-block d-md-block d-lg-block d-none">
+                                    <span>Otomotiv</span>
+                                </div>
+                                <div class="col-md-3 col-sm-5 col-5 d-sm-none d-md-block d-lg-block d-none">
+                                    <nb-icon icon="phone-outline"></nb-icon>
+                                    <span>02165553434</span>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-1">
+                                     <a (click)="showDetail=true"><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a> 
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-12" *ngIf="table1">
+                                    <hr>
+                                    <div class="col-md-12 col-sm-12 col-12">
+                                        <p class="list list-red">
+                                            <nb-icon icon="navigation-2-outline" class="icon-strong"></nb-icon>
+                                            <strong>Lokasyon 1:</strong> Ford X Lokasyonu
+                                            <a (click)="showDetail=true"><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-12">
+                                        <p class="list">
+                                            <nb-icon icon="navigation-2-outline" class="icon-strong"></nb-icon>
+                                            <strong>Lokasyon 2:</strong> Ford Y Lokasyonu
+                                            <a (click)="showDetail=true"><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-12">
+                                        <p class="list"> 
+                                            <nb-icon icon="navigation-2-outline" class="icon-strong"></nb-icon>
+                                            <strong>Lokasyon 3:</strong> Ford Z Lokasyonu
+                                            <a (click)="showDetail=true"><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div class="address-info-list">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-3 col-5">
+                                    <span class="right-text">12347</span>
+                                </div>
+                                <div class="col-md-3 col-sm-4 col-5">
+                                    <span>Ford</span>
+                                </div>
+                                <div class="col-md-3 col-sm-4 d-sm-block d-md-block d-lg-block d-none">
+                                    <span>Otomotiv</span>
+                                </div>
+                                <div class="col-md-3 col-sm-5 col-5 d-sm-none d-md-block d-lg-block d-none">
+                                    <nb-icon icon="phone-outline"></nb-icon>
+                                    <span>02165553434</span>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-1">
+                                    <a (click)="showDetail=true"><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="address-info-list">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-3 col-5">
+                                    <span class="right-text">12348</span>
+                                </div>
+                                <div class="col-md-3 col-sm-4 col-5">
+                                    <span>Honda</span>
+                                </div>
+                                <div class="col-md-3 col-sm-4 d-sm-block d-md-block d-lg-block d-none">
+                                    <span>Otomotiv</span>
+                                </div>
+                                <div class="col-md-3 col-sm-5 col-5 d-sm-none d-md-block d-lg-block d-none">
+                                    <nb-icon icon="phone-outline"></nb-icon>
+                                    <span>02165553434</span>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-1">
+                                    <a (click)="showDetail=true"><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </nb-card-body> 
+</nb-card>
+
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-20 pb-20" *ngIf="showDetail"> 
+        <nb-card-header>
+            <div class="back">
+                <nb-icon icon="arrow-ios-back-outline" class="blue-icon" (click)="showDetail=false;"></nb-icon>
+            </div>
+            <strong>MÜŞTERİ:</strong> FORD OTOMOTİV
+        </nb-card-header>
+        <nb-tabset>
+            <nb-tab tabTitle="GENEL">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-12">
+                        <div class="customer-info row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p><strong>Müşteri No:</strong></p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p>12345</p>
+                            </div>
+                        </div>
+                        <div class="customer-info row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p><strong>Müşteri Sektör:</strong></p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p>Otomotiv</p>
+                            </div>
+                        </div>
+                        <div class="customer-info row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p><strong>Müşteri Statüsü:</strong></p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p>Aktif</p>
+                            </div>
+                        </div>
+                        <div class="customer-info row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p><strong>Yükleme Yeri:</strong></p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p>Tuzla</p>
+                            </div>
+                        </div>
+                        <div class="customer-info row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p><strong>Ülke:</strong></p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p>Türkiye</p>
+                            </div>
+                        </div>
+                        <div class="customer-info row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p><strong>Gümrük:</strong></p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p>İstanbul</p>
+                            </div>
+                        </div>
+                        <div class="customer-info row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p><strong>Antrepo:</strong></p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p>Bursa</p>
+                            </div>
+                        </div>
+                        <div class="customer-info row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p><strong>Varış Gümrük:</strong></p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p>Müşteri</p>
+                            </div>
+                        </div>
+                        <div class="customer-info row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p><strong>Teslim Şekli:</strong></p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                <p>Harici Ant.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-12">
+                        <div class="customer-card">
+                            <h5>YETKİLİLER</h5>
+                            <p><strong>Ad Soyad:</strong> Büşra Yıldırım</p>
+                            <p><strong>Departman:</strong> Lojistik</p>
+                            <p><strong>GSM:</strong> 0212 222 55 22</p>
+                            <p><strong>E-mail:</strong> busra@ford.com.tr</p>
+                            
+                            <button class="add" type="button">
+                                <nb-icon icon="plus-outline" class="add-icon"></nb-icon>EKLE
+                            </button>
+                            <button class="edit" type="button">
+                                <nb-icon icon="edit-outline" class="edit-icon"></nb-icon>DÜZENLE
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nb-tab>
+            <nb-tab tabTitle="FİNANS">
+                <div class="customer-info row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                        <p><strong>Ödeme Tipi:</strong></p>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                        <p>Havale</p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                        <p><strong>Fatura Vadesi:</strong></p>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                        <p>30</p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                        <p><strong>Banka:</strong></p>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                        <p>Finansbank</p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                        <p><strong>Vade Başlama:</strong></p>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                        <p>25.09.2019</p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                        <p><strong>Satış Sorumlusu:</strong></p>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                        <p>Serhat Mat</p>
+                    </div>
+                </div>
+            </nb-tab>
+            <nb-tab tabTitle="KPI">
+                <strong class="text-center">Planlanan ve Gerçekleşen</strong>
+                <div class="col-lg-6">
+                    <nb-card-body>
+                        <ngx-echarts-bar></ngx-echarts-bar>
+                    </nb-card-body>
+                </div>
+            </nb-tab>
+            <nb-tab tabTitle="SİPARİŞLER">          
+                <div class="order-area">
+                    <label>Sipariş Türü:</label>
+                    <nb-select placeholder="Tüm Siparişler" [(selected)]="selectedItem">
+                    <nb-option value="0">Aktif Siparişler</nb-option>
+                    <nb-option value="1">Kesin Siparişler</nb-option>
+                    <nb-option value="2">Yola Çıkacak Siparişlerim</nb-option>
+                    <nb-option value="3">Yoldaki Siparişlerim</nb-option>
+                    <nb-option value="4">Terminaldeki Siparişlerim</nb-option>
+                    <nb-option value="5">Arşivdeki Siparişlerim</nb-option>
+                    </nb-select>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                      <tr>
+                        <th>Sipariş No</th>
+                        <th>İthalat</th>
+                        <th>Ülke</th>
+                        <th>Hazır Tarih</th>
+                        <th></th>
+                      </tr>
+                      <tr>
+                        <td>12345</td>
+                        <td>Evet</td>
+                        <td>Almanya</td>
+                        <td>29.09.2019</td>
+                        <td><a routerLink=""><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a></td>
+                      </tr>
+                      <tr>
+                        <td>12346</td>
+                        <td>Evet</td>
+                        <td>Almanya</td>
+                        <td>29.09.2019</td>
+                        <td><a routerLink=""><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a></td>
+                      </tr>
+                      <tr>
+                        <td>12347</td>
+                        <td>Hayır</td>
+                        <td>Almanya</td>
+                        <td>29.09.2019</td>
+                        <td><a routerLink=""><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a></td>
+                      </tr>
+                      <tr>
+                        <td>12348</td>
+                        <td>Evet</td>
+                        <td>Almanya</td>
+                        <td>29.09.2019</td>
+                        <td><a routerLink=""><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a></td>
+                      </tr>
+                    </table>
+                </div>     
+            </nb-tab>
+            <nb-tab tabTitle="ZİYARETLER">
+                <div style="overflow-x:auto;">
+                    <h4 class="sub-title text-center">Gelecek Ziyaretler</h4>
+                    <table>
+                      <tr>
+                        <th>Tarih</th>
+                        <th>Lokasyon</th>
+                        <th>Görüşülen Kişi</th>
+                        <th>Konu</th>
+                      </tr>
+                      <tr>
+                        <td>30.09.2019</td>
+                        <td>Tuzla</td>
+                        <td>Büşra Yıldırım</td>
+                        <td>Sipariş</td>
+                      </tr>
+                    </table>
+                    <h4 class="sub-title text-center mt-40">Geçmiş Ziyaretler</h4>
+                    <table>
+                      <tr>
+                        <th>Tarih</th>
+                        <th>Lokasyon</th>
+                        <th>Görüşülen Kişi</th>
+                        <th>Konu</th>
+                      </tr>
+                      <tr>
+                        <td>05.09.2019</td>
+                        <td>Tuzla</td>
+                        <td>Büşra Yıldırım</td>
+                        <td>Prelost</td>
+                      </tr>
+                      <tr>
+                        <td>10.09.2019</td>
+                        <td>Tuzla</td>
+                        <td>Büşra Yıldırım</td>
+                        <td>Sipariş</td>
+                      </tr>
+                      <tr>
+                        <td>20.09.2019</td>
+                        <td>Tuzla</td>
+                        <td>Büşra Yıldırım</td>
+                        <td>Problem</td>
+                      </tr>
+                    </table>
+                </div>  
+            </nb-tab> 
+        </nb-tabset>
+        <hr>
+        <div class="col-12">
+            <div class="">
+                <div class="bottom-icon">
+                    <button class="btn" type="button" (click)="open()">
+                    <nb-action icon="message-circle-outline" class="green-icon"></nb-action>
+                    </button>
+                    <button class="btn" type="button">
+                    <nb-action icon="email-outline" class="yellow-icon"></nb-action>
+                    </button>
+                    <button class="btn" type="button">
+                    <nb-action icon="phone-call-outline" class="blue-icon"></nb-action>
+                    </button>
+                </div>
+            </div>
+        </div>    
+</nb-card>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card class="text-center">
+        <nb-card-header>Konu Seç</nb-card-header>
+        <nb-card-body>               
+            <div class="col-12">
+                <nb-select placeholder="Konu Seçiniz" [(selected)]="selectedItem">
+                <nb-option value="0">Konu 1</nb-option>
+                <nb-option value="1">Konu 2</nb-option>
+                <nb-option value="2">Konu 3</nb-option>
+                </nb-select>
+            </div>       
+            <button nbButton (click)="click();ref.close()">SOHBET BAŞLAT</button>
+        </nb-card-body>
+    </nb-card>
+</ng-template> -->

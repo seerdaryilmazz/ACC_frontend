@@ -1,0 +1,105 @@
+<div class="main-title">{{'DELAYED_ORDERS'|translate}}</div>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-20 pb-20">
+    <nb-card-body>     
+        <div class="back" *ngIf="!showDetail">
+            <nb-icon icon="arrow-ios-back-outline" class="blue-icon" [routerLink]="['/pages/task/task-page']" style="cursor:pointer; margin-bottom: 0;"></nb-icon>
+        </div> 
+        <div class="row">
+            <div class="table-search searh-area mb-30" *ngIf="!showDetail" style="float: left; margin-top: 25px;">
+                <input #search nbInput fullWidth class="search size-medium shape-rectangle" type="text" placeholder="{{'SEARCH_INPUT_PLACE_HOLDER'|translate}}" (keyup)="onSearch(search.value)">
+                <span class="input-group-btn">
+                    <button class="btn" type="button" (click)="onSearch(search.value)">
+                        <nb-action icon="search-outline" class="search-blue-icon"></nb-action>
+                    </button>
+                </span>
+                <div class="table-small-text">
+                    <p class="small">*{{'CUSTOMER_SEARCH_INFO'|translate}}.</p>
+                </div>
+            </div>
+            <div class="siparis-select" *ngIf="!showDetail">
+                <div class="col-md-12">
+                    <label>{{'TIME_PERIOD' |translate}}</label>
+                </div>
+                <div class="col-md-12">
+                    <nb-select placeholder="Aralık Seçiniz" [ngModel]="dateRangeValue" (ngModelChange)="getDelayedOrders($event)">
+                        <nb-option *ngFor="let dateRange of dateRangeList" [value]="dateRange.value">
+                            {{dateRange.name | translate}}</nb-option>
+                    </nb-select>
+                </div>
+            </div> 
+        </div>    
+        <div class="order-area">
+            <div style="overflow-x:auto;">
+                <ngx-datatable *ngIf="!showDetail" [data]="delayedOrders" [searchQuery]="searchQuery" (userRowSelect)="userRowSelect($event)" style="cursor:pointer;">
+                    <ngx-datatable-column #columns title="ORDER_NO" value="OrderNo" [search]="true"></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="CUSTOMER" value="CustomerName" [search]="true"></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="READY_DATE" value="ReadyDate" type='date' [customValueFunction]="customDate"></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="ETA" value="EstimatedArrivalTime" type='date' [customValueFunction]="customDate"></ngx-datatable-column>
+                    <ngx-datatable-column #columns title="OG" value="DueDate" type='date' [customValueFunction]="customDate"></ngx-datatable-column>
+                </ngx-datatable>
+            </div>               
+        </div>
+        <div class="order-detail" *ngIf="showDetail">
+            <div class="back">
+                <nb-icon icon="arrow-ios-back-outline"  class="blue-icon" (click)="showDetail=false;"></nb-icon>
+            </div>
+            <table>
+                <tr>
+                  <th >{{'ORDER_NO' | translate}}</th>
+                  <th>{{'CUSTOMER' | translate}}</th>
+                  <th>{{'READY_DATE' | translate}}</th>
+                  <th>{{'ETA' | translate}}</th>
+                  <th>{{'OG' | translate}}</th>
+                  <th>{{'PRIORITY' | translate}}</th>
+                </tr>
+                <tr style="cursor: pointer;" (click)="showOrderDetailModal()">
+                  <td>{{selectedOrder.OrderNo}}</td>
+                  <td>{{selectedOrder.CustomerName}}</td>
+                  <td>{{selectedOrder.ReadyDate | date: 'dd.MM.yyyy HH:mm'}}</td>
+                  <td>{{selectedOrder.EstimatedArrivalTime | date: 'dd.MM.yyyy HH:mm'}}</td>
+                  <td>{{selectedOrder.DueDate | date: 'dd.MM.yyyy HH:mm'}}</td>
+                  <td><div class="circle-red"></div></td>
+                </tr>
+            </table>           
+    <!--         <div class="customer-info row pt-30">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'SERVICE_TYPE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p [innerHtml]="selectedOrder.Service"></p>
+                </div>
+            </div>   -->      
+            <div class="customer-info row pt-30">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'DELAY_TYPE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.DelayType}}</p>
+                </div>
+            </div>
+            <!--<div class="customer-info row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'INTERLOCUTOR'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.DelayResponsibility}}</p>
+                </div>
+            </div>-->
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'EXPLANATION'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.DelayDescription}}</p>
+                </div>
+            </div>
+            <hr>
+<!--             <app-communication-comp></app-communication-comp>
+ -->        </div>
+    </nb-card-body>
+</nb-card>
+
+
+<ng-template #orderDetailModal let-data let-ref="dialogRef" style="overflow-y: auto;">
+    <specific-order-component #specificOrderComponent [orderCode]="selectedOrder.OrderNo"></specific-order-component>
+</ng-template>

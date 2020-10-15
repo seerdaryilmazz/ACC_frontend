@@ -1,0 +1,9 @@
+{
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "tslint.enable": false,
+    "explorer.autoReveal": false,
+    "workbench.editor.limit.enabled": true,
+    "workbench.editor.tabSizing": "shrink",
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.editor.limit.value": 15
+}

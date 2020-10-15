@@ -1,0 +1,109 @@
+<div [hidden]="showDetail">
+    <div class="main-title">{{'CUSTOMERS'|translate}}</div>
+    <nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-10" >
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-12 searh-area" *ngIf="accounts.length>0 || (accounts.length==0 && this.inputQuery != '')">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>{{'CUSTOMER_SEARCH'|translate}}:</label>
+                        </div>
+                        <div class="col-lg-12">
+                            <input #searchInput nbInput fullWidth placeholder="" class="search size-medium shape-rectangle" type="text" autocomplete="off">
+                            <span class="input-group-btn">
+                            <button class="btn" type="button">
+                                <nb-action icon="search-outline" class="search-blue-icon"></nb-action>
+                            </button>
+                            </span>
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="small">*{{'CUSTOMER_SEARCH_INFO2'|translate}}.</p>
+                        </div>
+                    </div>
+                </div>
+                <p *ngIf="accounts.length==0" >{{'ACCOUNTS_NOT_FOUND_WARNING'|translate}}</p>
+
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="!showDetail && accounts.length>0 "> 
+                    <div class="pt-10 pb-30">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h3 class="sub-title">{{'MY_CUSTOMERS'|translate}}</h3>
+                            </div>
+                        </div>
+                        <div class="address-info-container">
+                            <div class="address-info-list list-title">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-3 col-5">
+                                        <span class="bold">{{'NO'|translate}}</span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-5">
+                                        <span class="bold">{{'CUSTOMER_NAME'|translate}}</span>
+                                    </div>
+                                    <div class="col-md-3 col-sm-4 d-sm-block d-md-block d-lg-block d-none">
+                                        <span class="bold">{{'SECTORS'|translate}}</span>
+                                    </div>
+                                     <div class="col-md-3 col-sm-5 col-5 d-sm-none d-md-block d-lg-block d-none">
+                                        <span class="bold">{{'PHONE_NUMBER'|translate}}</span>
+                                    </div>
+                                  <!--   <div class="col-md-1 col-sm-1 col-1">
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="address-info-list" *ngFor="let account of accounts; index as i;" 
+                                (click)="getCompanyLocationsById(account)">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-3 col-5">
+                                        <nb-icon icon="chevron-down-outline" class="icon-strong"></nb-icon>
+                                        <span class="right-text">{{account.AccountCompanyId}}</span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-5">
+                                        <span>{{account.AccountName}}</span>
+                                        <a class="icon ml-1" (click)="customerClick(account)"><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a>
+                                    </div>
+                                    <div class="col-md-3 col-sm-4 d-sm-block d-md-block d-lg-block d-none">
+                                        <span>{{account.AccountSectorName.toUpperCase() | translate}}</span>
+                                    </div>
+                                   <div class="col-md-3 col-sm-5 col-5 d-sm-none d-md-block d-lg-block d-none">
+                                        <nb-icon *ngIf="account.CompanyDefaultLocationPhoneNumber.length>0" icon="phone-outline"></nb-icon>
+                                        <span> {{account.CompanyDefaultLocationPhoneNumber}}</span>
+                                    </div> 
+                                 <!--    <div class="col-md-1 col-sm-1 col-1">
+                                    </div> -->
+                                    <div class="col-md-12 col-sm-12 col-12" *ngIf="companyLocations && companyLocations && companyLocations.length>0 && (account.AccountCompanyId == companyLocations[0].company.id) && showLocation" [@slideAnimation]>
+                                        <hr>
+                                        <div class="col-md-12 col-sm-12 col-12" *ngIf="companyLocations && companyLocations && companyLocations.length>0 && 
+                                            (account.AccountCompanyId == companyLocations[0].company.id) && showLocation">
+                                            <p class="list" *ngFor="let location of companyLocations; index as j">
+                                                <nb-icon icon="navigation-2-outline" class="icon-strong"></nb-icon>
+                                                <strong>{{'LOCATION'|translate}} {{i+1}}: </strong> 
+                                                <span>{{location.shortName}}</span>
+                                                <a class="icon" (click)="getCompanyLocationById(account.AccountCompanyId,location.id)">
+                                                    <nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon>
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="totalCount > 10" class="col-12 text-center">
+                                <ngb-pagination [collectionSize]="totalCount" [maxSize]="4" [rotate]="true" [ellipses]="false"
+                                    [boundaryLinks]="true" [page]="currentPage" (pageChange)="pageChange($event)">
+                                    <ng-template ngbPaginationFirst>«</ng-template>
+                                    <ng-template ngbPaginationLast>»</ng-template>
+                                    <ng-template ngbPaginationNext>></ng-template>
+                                    <ng-template ngbPaginationPrevious>
+                                        <</ng-template>
+                                </ngb-pagination>
+                            </div>
+                        </div>
+                    </div>
+
+                    <nb-card [nbSpinner]="true" nbSpinnerSize="small" nbSpinnerStatus="primary">
+                    </nb-card>
+                </div> 
+            </div> 
+        </nb-card-body>
+    </nb-card>
+</div>
+<customer-detail-page [showDetail]="showDetail" (showDetailOutput)="showDetail=false">
+</customer-detail-page>

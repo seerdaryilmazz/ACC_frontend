@@ -1,0 +1,94 @@
+
+
+ <img src="../assets/images/ekol-logo.png" class="login-logo">
+  <p class="sub-title">Ekol Google Hesabınızla Giriş Yapabilirsiniz</p>
+  
+  <nb-alert *ngIf="showMessages.error && errors?.length && !submitted" outline="danger" role="alert">
+    <p class="alert-title"><b>Hata!</b></p>
+    <ul class="alert-message-list">
+      <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
+    </ul>
+  </nb-alert>
+  
+  <nb-alert *ngIf="showMessages.success && messages?.length && !submitted" outline="success" role="alert">
+    <p class="alert-title"><b>Başarılı!</b></p>
+    <ul class="alert-message-list">
+      <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
+    </ul>
+  </nb-alert>
+  
+  <form (ngSubmit)="login()" #form="ngForm" aria-labelledby="title"  class="text-center mt-20">
+  
+   <!-- <div class="">
+      <label class="label" for="input-username">Kullanıcı Adı:</label>
+      <input nbInput
+             fullWidth
+             [(ngModel)]="user._id"
+             #username="ngModel"
+             name="username"
+             id="input-username"
+             pattern=""
+             placeholder="Kullanıcı Adı"
+             autofocus
+             [status]="username.dirty ? (username.invalid  ? 'danger' : 'success') : ''"
+             [required]="getConfigValue('forms.validation.username.required')"
+             [attr.aria-invalid]="username.invalid && username.touched ? true : null">
+      <ng-container *ngIf="username.invalid && username.touched">
+        <p class="error-message" *ngIf="username.errors?.required">
+          username is required!
+        </p>
+        <p class="error-message" *ngIf="username.errors?.pattern">
+          username should be the real one!
+        </p>
+      </ng-container>
+    </div>
+  
+    <div class="">
+      <label class="label" for="input-password">Parola:</label>
+      <input nbInput
+             fullWidth
+             [(ngModel)]="user.password"
+             #password="ngModel"
+             name="password"
+             type="password"
+             id="input-password"
+             placeholder="Parola"
+             [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
+             [required]="getConfigValue('forms.validation.password.required')"
+             [minlength]="getConfigValue('forms.validation.password.minLength')"
+             [maxlength]="getConfigValue('forms.validation.password.maxLength')"
+             [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+      <ng-container *ngIf="password.invalid && password.touched ">
+        <p class="error-message" *ngIf="password.errors?.required">
+          Password is required!
+        </p>
+        <p class="error-message" *ngIf="password.errors?.minlength || password.errors?.maxlength">
+          Password should contains
+          from {{ getConfigValue('forms.validation.password.minLength') }}
+          to {{ getConfigValue('forms.validation.password.maxLength') }}
+          characters
+        </p>
+      </ng-container>
+    </div>
+  
+    <div class="form-control-group accept-group">
+      <nb-checkbox name="rememberMe" [(ngModel)]="user.rememberMe" *ngIf="rememberMe">Beni Hatırla</nb-checkbox>
+      <a class="forgot-password" routerLink="../request-password">Şifremi Unuttum</a>
+    </div>
+  
+    <button nbButton fullWidth status="success" [disabled]="submitted || !form.valid" [class.btn-pulse]="submitted" class="color-white"> GİRİŞ YAP </button> -->
+  <!--   
+    <div id="gSignInWrapper">
+      <span class="label">Sign in with:</span>
+      <div id="customBtn" class="customGPlusSignIn">
+        <span class="icon"></span>
+        <span class="buttonText">Google</span>
+      </div>
+    </div> -->
+    <button (click)="onSigninWithGoogle()" nbButton
+    status="primary">
+    EKOL GOOGLE HESABIYLA GİRİŞ YAP
+  </button>
+  </form>
+
+

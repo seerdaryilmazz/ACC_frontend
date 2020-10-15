@@ -1,0 +1,46 @@
+<div class="header-container">
+  <div class="logo-container">
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+      <nb-icon icon="menu-2-outline"></nb-icon>
+    </a>
+    <a class="logo" href="#" (click)="navigateHome()">Ekol Accompany</a>
+  </div>
+  <!-- <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
+    <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>
+  </nb-select> -->
+</div>
+
+<div class="header-container">
+  <div ngbDropdown class="d-inline-block" #dropDown="ngbDropdown">
+    <button class="notifications" outline nbButton status="basic" id="dropdown" ngbDropdownToggle>
+      <nb-badge *ngIf="unreadNotificationsCount > 0" status="danger" position="top left" 
+      [text]="unreadNotificationsCount > 99 ? unreadNotificationsCount+'+' : unreadNotificationsCount"></nb-badge>
+      <nb-icon icon="bell-outline" class="ml-0"></nb-icon>
+    </button>
+    <div class="py-0" ngbDropdownMenu aria-labelledby="dropdown">
+      <ul class="list-group" style="width: 300px;">
+        <li *ngIf="notifications.length == 0" class="list-group-item">{{'NO_NOTIFICATIONS' | translate}}</li>
+        <li *ngFor="let not of notifications | slice:0:10" [style.font-weight]="!not.Read ? 900 : 400"
+        class="list-group-item notification" (click)="notificationClick(not); dropDown.close()">{{not.Content}}</li>
+      </ul>
+      <button class="all-notification" nbButton fullWidth outline status="primary" (click)="navigateNotifications(); dropDown.close()">
+        {{'VIEW_NOTIFICATIONS' | translate}} 
+      </button>
+    </div>
+  </div>
+  <nb-actions size="small">
+    <nb-action>
+      <div class="lang">
+        <nb-select [(selected)]="selectedLanguage" (selectedChange)="changeLanguage($event)">
+          <nb-option *ngFor="let lang of languageList" [value]="lang.value">{{lang.display}}</nb-option>
+        </nb-select>
+      </div>
+    </nb-action>
+    <!-- <nb-action class="control-item" icon="email-outline"></nb-action> -->
+    <!--<nb-action class="control-item" icon="bell-outline"></nb-action> -->
+    <nb-action class="user-action" *nbIsGranted="['view', 'user']" >
+      <nb-user [nbContextMenu]="userMenu" [name]="userName" picture="{{pictureUrl}}" >
+      </nb-user>
+    </nb-action>
+  </nb-actions>
+</div>

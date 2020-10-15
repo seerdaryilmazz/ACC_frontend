@@ -1,0 +1,38 @@
+
+  <div class="col-12 row" *ngIf="showTeamMembers || showOtherUsers" style="margin-bottom: 20px;">
+<!--       <span style="margin:10px 5px 0 0;" *ngIf="selectedLanguage=='en-EN'">{{'SELECT_TEAM_MEMBER_INFO'|translate}}</span></div>
+ -->  <!--   <nb-select [(selected)]="selectedUserId" (selectedChange)="changeSelectedUser($event)">
+      <nb-option *ngFor="let user of teamMemberLists" [value]="user.id">{{user.displayName}}</nb-option>
+    </nb-select> -->
+      <span style="margin-right: 20px; margin-top: 10px;">{{'SELECTED_USER' | translate}}</span>
+      <ngx-select-dropdown style="width:270px;"  tabindex="0" [multiple]="false" [ngModel]="selectedMember"   (change)="changeSelectedUser($event)"
+        [options]="teamMemberLists" [config]="teamMemberListConfig"></ngx-select-dropdown>
+<!--       <div class="col-lg-6"><span class="col-lg-6" style="margin:10px 0 0 5px;" *ngIf="selectedLanguage=='tr-TR'">{{'SELECT_TEAM_MEMBER_INFO'|translate}}</span></div>
+ -->   
+  </div>
+
+<div class="row"> 
+  <div class="col-12">
+    <span style="margin-right: 20px;">{{'TIME_PERIOD' |translate}}</span>
+    <nb-select placeholder="{{'SELECT_PERIOD' |translate}}" [ngModel]="dateRangeValue" (ngModelChange)="getUserDashboardCardCount($event)">
+      <nb-option *ngFor="let dateRange of dateRangeList" [value]="dateRange.value">
+          {{dateRange.name | translate}}</nb-option>
+    </nb-select>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-12 mt-10">
+    <ngx-card title="CUSTOMERS" icon="people-outline" [homePage]="true" iconClass="icon-bg-1-gradient" path='/pages/customers/customers-page' amount={{accountAndCalendarSize.AccountSize}}></ngx-card>
+  </div>
+  <div class="col-lg-6 col-md-6 col-12 mt-10">
+    <ngx-card title="TASKS" icon="checkmark-square-outline" [homePage]="true" iconClass="icon-bg-4-gradient" path='/pages/task/task-page' amount={{taskAndOrderSize.TaskSize}}></ngx-card>
+  </div>
+  <div class="col-lg-6 col-md-6 col-12">
+    <ngx-card title="ORDERS" icon="navigation-2-outline" [homePage]="true" iconClass="icon-bg-2-gradient" path='/pages/orders/orders-page' amount={{taskAndOrderSize.OrderSize}}></ngx-card>
+  </div>
+  <div class="col-lg-6 col-md-6 col-12">
+    <ngx-card title="CALENDAR" icon="calendar-outline" [homePage]="true" iconClass="icon-bg-3-gradient" path='/pages/calendar' amount={{accountAndCalendarSize.CalendarSize}}></ngx-card>
+  </div>
+</div>
+
+<prior-tasks-comp #priorTasks ></prior-tasks-comp>

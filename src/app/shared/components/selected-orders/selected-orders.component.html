@@ -1,0 +1,28 @@
+<div class="order-area">
+  <label>Sipariş Türü:</label>
+  <nb-select [(selected)]="selectedOrderType" (selectedChange)="changeOrdersType($event)">
+    <nb-option *ngFor="let ordersType of ordersTypeList" [value]="ordersType.Value">{{ordersType.Display}}</nb-option>
+  </nb-select>
+</div>
+<div class="table-search searh-area mb-30">
+  <input #search nbInput fullWidth class="search size-medium shape-rectangle" type="text" placeholder="{{'SEARCH_INPUT_PLACE_HOLDER'|translate}}" (keyup)="onSearch(search.value)">
+  <span class="input-group-btn">
+      <button class="btn" type="button" (click)="onSearch(search.value)">
+          <nb-action icon="search-outline" class="search-blue-icon"></nb-action>
+      </button>
+  </span>
+  <div class="table-small-text">
+    <p class="small">*Sipariş No ve Müşteri adı ile arama yapabilirsiniz.</p>
+  </div>
+</div>  
+<div style="overflow-x:auto;">
+    <ngx-datatable [data]="orders" [searchQuery]="searchQuery" (userRowSelect)="onRowSelected($event)" style="cursor:pointer;">
+      <ngx-datatable-column #columns title="ORDER_NO" value="OrderNo" [search]="true"></ngx-datatable-column>
+      <ngx-datatable-column #columns title="SERVICE_TYPE" value="Service" [rendererComponent]="customRendererComponent" [search]="true"></ngx-datatable-column>
+      <ngx-datatable-column #columns title="COUNTRY" value="CountryInfo" [search]="true"></ngx-datatable-column>
+      <ngx-datatable-column #columns title="READY_DATE" value="ReadyDate" type='date' [customValueFunction]="customDate" [search]="true"></ngx-datatable-column>
+    </ngx-datatable>
+</div>
+<ng-template #orderDetailModal let-data let-ref="dialogRef" style="overflow-y: auto;">
+  <specific-order-component #specificOrderComponent [orderCode]="selectedOrderNo"></specific-order-component>
+</ng-template>

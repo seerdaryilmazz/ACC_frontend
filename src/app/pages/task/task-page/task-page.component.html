@@ -1,0 +1,37 @@
+<div class="main-title">{{'MY_TASK' | translate}}</div>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-10 task-container">
+
+    <nb-card-body>  
+        <div class="siparis-select">
+            <div class="col-md-12">
+                <label>{{'TIME_PERIOD' | translate}}</label>
+            </div>
+            <div class="col-md-12">
+                <nb-select placeholder="{{'SELECT_PERIOD' | translate}}" [ngModel]="dateRangeValue" (ngModelChange)="getAllTaskTypeCount($event)">
+                    <nb-option *ngFor="let dateRange of dateRangeList" [value]="dateRange.value">
+                        {{dateRange.name | translate}}</nb-option>
+                </nb-select>
+            </div>
+        </div>  
+        <div class="row pt-20">
+            <div class="col-md-6 col-12">
+                <ngx-card title="DELAYED_ORDERS" icon="clock-outline" iconClass="icon-bg-4" path='/pages/task/delayed-orders' amount={{taskTypeCount.DelayedOrderCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="ORDERS_ADDED_PROBLEM" icon="alert-triangle-outline" iconClass="icon-bg-4" path='/pages/task/problem' amount={{taskTypeCount.ProblematicOrderCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="ORDERS_ADDED_EXTRA_CHARGED" icon="shuffle-outline" iconClass="icon-bg-4" path='/pages/task/expensive' amount={{taskTypeCount.ExpenseOrderCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="FIRST_ORDERS_IN_NEW_LOCATION" icon="car-outline" iconClass="icon-bg-4" path='/pages/task/new-location' amount={{taskTypeCount.NewLocationOrderCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="COMPLAINTS" icon="alert-circle-outline" iconClass="icon-bg-4" path='/pages/task/complaints' amount={{taskTypeCount.ComplaintCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="TO_DO" icon="people-outline" iconClass="icon-bg-4" path='/pages/task/todos' amount={{taskTypeCount.TodosCount}}></ngx-card>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>

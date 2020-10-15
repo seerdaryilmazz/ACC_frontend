@@ -1,0 +1,10 @@
+<nb-card>
+  <nb-card-header>{{'ENTER_NAME' | translate}}</nb-card-header>
+  <nb-card-body>
+    <input #name nbInput placeholder="{{'NAME' | translate}}">
+  </nb-card-body>
+  <nb-card-footer>
+    <button class="cancel" nbButton status="danger" (click)="cancel()">{{'CANCEL' | translate | uppercase}}</button>
+    <button nbButton status="primary" (click)="submit(name.value)">{{'SUBMIT' | translate | uppercase}}</button>
+  </nb-card-footer>
+</nb-card>

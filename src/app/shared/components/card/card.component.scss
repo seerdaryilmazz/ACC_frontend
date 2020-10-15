@@ -1,0 +1,51 @@
+
+.main-icon nb-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  border-radius: 0.25rem;
+  transition: width 0.4s ease;
+  transform: translate3d(0, 0, 0);
+  color: #fff;
+  padding: 10px;
+  margin: 10px;
+  width: 100%;
+  height: 70px;
+  font-weight: 300;
+  background-image: linear-gradient(to right, #00aef0, #00aef0);
+}
+.icon-bg-1-gradient nb-icon{
+  background-image: linear-gradient(to right, #00aef0, #00aef0);
+}
+.icon-bg-2 nb-icon{
+  background-image: linear-gradient(to right, #00d68f, #00d68f);
+}
+.icon-bg-2-gradient nb-icon{
+  background-image: linear-gradient(to right, #2ce69b, #00d68f);
+}
+.icon-bg-3-gradient nb-icon{
+  background-image: linear-gradient(to right, #42aaff, #0095ff);
+}
+.icon-bg-4 nb-icon{
+  background-image: linear-gradient(to right, #ffaa00, #ffaa00);
+}
+.icon-bg-4-gradient nb-icon{
+  background-image: linear-gradient(to right, #ffc94d, #ffaa00);
+}
+.main-text{
+  display: flex;
+  align-items: center;
+}
+.main-text h5{
+  margin-bottom: 0;
+  font-size: 1.20rem;
+}
+.main-text h6{
+  padding-right: 10px !important;
+  font-size: 1rem
+}
+.main-text nb-icon{
+  color: #555;
+  font-size: 18px !important;
+}

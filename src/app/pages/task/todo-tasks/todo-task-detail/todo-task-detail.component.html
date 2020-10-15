@@ -1,0 +1,164 @@
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-20 pb-20">
+    <nb-card-body>
+        <div style="float: right;">
+            <div class="row">
+                <h6 class="m-auto">{{'TASK_NUMBER' | translate}}: &nbsp;&nbsp;&nbsp; {{task && task.TaskNumber}}</h6>
+            </div>
+        </div>
+        <div class="back">
+            <nb-icon icon="arrow-ios-back-outline" class="blue-icon" [routerLink]="['/pages/task/todos']" ></nb-icon>
+        </div>
+        <div *ngIf="task" class="container mt-10">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong> {{'CREATED_AT'|translate}}: </strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{task.TaskCreatedAt | date: 'dd.MM.yyyy'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong> {{'TASK_CREATED_BY'|translate}}: </strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{task.TaskCreatedBy.displayName}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong> {{'CUSTOMER'|translate}}: </strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{task.TaskCustomerAccount?.AccountName}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong> {{'STATUS'|translate}}: </strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{task.TaskStatus | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong> {{'DEADLINE'|translate}}: </strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{task.TaskDeadline | date: 'dd.MM.yyyy'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong> {{'TASK_OWNER'|translate}}: </strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{task.TaskOwner.displayName}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong> {{'TASK_SUBJECT'|translate}}: </strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>{{task.TaskSubject | translate}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-end mt-20">
+                <div>
+                    <button *ngIf="isVisible('REOPEN')" nbButton status="primary" (click)="openDeadlineDialog('REOPEN')">{{'REOPEN' | translate}}</button>
+                    <button *ngIf="isVisible('CANCEL')" nbButton status="danger" (click)="cancelTask()">{{'CANCEL' | translate}}</button>
+                    <button *ngIf="isVisible('COMPLETE')" nbButton status="success" (click)="openConfirmationModal()">{{'COMPLETE' | translate}}</button>
+                    <button *ngIf="isVisible('POSTPONE')" nbButton status="warning" (click)="openDeadlineDialog('POSTPONE')">{{'POSTPONE' | translate}}</button>
+                    <button *ngIf="isVisible('CLOSE')" nbButton status="danger" (click)="closeTask()">{{'CLOSE' | translate}}</button>
+                    <button *ngIf="isVisible('ACTIVITY') || this.relatedActivity" [disabled]="task?.TaskSubject !== 'SPECIFIC_CUSTOMER_VISIT'" nbButton
+                        status="info" (click)="openCalenderEvent()">{{(this.relatedActivity ? 'SEE_ACTIVITY' : 'CREATE_ACTIVITY') | translate}} 
+                    </button>
+                </div>
+            </div>
+            
+            <div class="row justify-content-center">
+                <angular-editor placeholder="{{'Description' | translate}}" style="text-align: left;" [config]="descriptionConfig" [(ngModel)]="newDescriptionContent"></angular-editor>
+            </div>
+            <div class="row justify-content-end mt-2">
+                <button nbButton status="success" [disabled]="!newDescriptionContent" (click)="saveDescription()">{{'SAVE' | translate}}</button>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <ngx-datatable [data]="task.TaskDescriptions" (userRowSelect)="userRowSelect($event)" style="cursor:pointer">
+                        <ngx-datatable-column #columns title="CONTENT"  value="Content" [rendererComponent]="richTextViewer"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="ACTION_AT" value="ActionAt" dateFormat="dd.MM.yyyy"></ngx-datatable-column>
+                        <ngx-datatable-column #columns title="ACTION_BY" value="ActionBy"></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>
+
+
+<ng-template #deadlineTemplate let-context let-ref="deadlineDialog" >
+    <nb-card class="deadlineDialog text-center">
+        <nb-card-body>
+            <div class="row">
+                <div class="col mb-20">
+                    <h5>{{'SET_A_NEW_DEADLINE' | translate}}</h5>
+                    <igx-date-picker #datePicker locale="tr" [cancelButtonLabel]="'CLOSE' | translate" [todayButtonLabel]="'TODAY' | translate" 
+                        label="" monthsViewNumber="1" [hideOutsideDays]="true" mask="dd.MM.yyyy" format="dd.MM.yyyy" [(ngModel)]="newDeadline">
+                    </igx-date-picker>
+                </div>
+            </div>
+            <button *ngIf="context ==='REOPEN'" [disabled]="!newDeadline" nbButton status="primary" (click)="reopenTask()">{{"SAVE" | translate}}</button>
+            <button *ngIf="context ==='POSTPONE'" [disabled]="!newDeadline" nbButton status="primary" (click)="postponeTask()">{{"SAVE" | translate}}</button>
+            <button nbButton status="basic" (click)="deadlineDialog.close()">{{"CLOSE" | translate}}</button>
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ng-template #descriptionTemplate let-context let-ref="descriptionDialog" >
+    <nb-card class="dialog descriptionDialog text-center">
+        <nb-card-header><h2> {{'OPERATION_DETAIL' | translate}} </h2></nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <p><strong> {{'ACTION_AT'|translate}}: </strong></p>
+                        </div>
+                        <div class="col">
+                            <p>{{context.ActionAt | date:'dd.MM.yyyy'}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <p><strong> {{'ACTION_BY'|translate}}: </strong></p>
+                        </div>
+                        <div class="col">
+                            <p>{{context.ActionBy}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-20">
+                <div class="col">
+                    <angular-editor #editor class="editor" [config]="descriptionPreviewConfig" [(ngModel)]="context.translatedContent"></angular-editor>
+                </div>
+            </div>
+            <button nbButton status="basic" (click)="descriptionDialog.close()">{{"CLOSE" | translate}}</button>
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<calendar-event #calendarEvent (onSaveCalendarEvent)="saveCalendarEvent($event)" 
+    (onUpdateCalendarEvent)="updateCalendarEvent($event)" (onDeleteCalendarEvent)="deleteActivity($event)"></calendar-event>
+<ngx-dialog #informationModal></ngx-dialog>
+<ngx-dialog #confirmationModal (runMethod)="completeTask($event)"></ngx-dialog>

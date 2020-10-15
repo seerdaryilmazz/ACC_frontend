@@ -1,0 +1,155 @@
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-flip-card [showToggleButton]="false" [flipped]="flipped" class="flip-card">
+    <nb-card-front>
+      <nb-card class="dialog calendar text-center mb-0">
+        <nb-card-header><h2> {{(viewOnly? 'ACTIVITY' : (selectedActivity ? "UPDATE_ACTIVITY" : "ADD_NEW_ACTIVITY")) | translate}} </h2></nb-card-header>
+        <nb-card-body>
+          <form [formGroup]="activityForm">
+            <div class="col-md-10 offset-md-1">
+              <div class="text-center" *ngFor="let alert of alertsCard">
+                <ngb-alert class="text-center" [type]="alert.type" (close)="close()">{{ alert.msg }}</ngb-alert>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <input [readOnly]="viewOnly" type="text" name="header" formControlName="activityTitleControl" nbInput fullWidth placeholder="{{'Header' | translate}}" class="size-medium shape-rectangle">
+                <p class="validation" *ngIf="activityTitleControl.invalid && activityTitleControl.touched && buttonClicked">* {{"Provide_header" | translate}} </p>
+              </div>
+              <div class="col-md-6 col-12">
+                <select-dropdown [disabled]="viewOnly" formControlName="activityTypeControl" [config]="eventTypeConfig" [options]="calendarEventTypes"></select-dropdown>
+                <p class="validation" *ngIf="activityTypeControl.invalid && buttonClicked">* {{"Provide_activity_type" | translate}}</p>
+              </div>
+              <div class="col-md-6 col-12">
+                <select-dropdown [disabled]="viewOnly" formControlName="activitySegmentControl" tabindex="0" [multiple]="true" 
+                [options]="calendarSegmentTypes" [config]="segmentTypeConfig"></select-dropdown>
+                <p class="validation" *ngIf="buttonClicked && activitySegmentControl.invalid">* {{"Provide_segment_type" | translate}}</p>
+              </div>
+              <div class="col-md-6 col-12">
+                <select-dropdown [disabled]="viewOnly" formControlName="activityScopeControl" [config]="scopeConfig" 
+                [options]="calendarScopeTypes" (change)="scopeChange($event)"></select-dropdown>
+                <p class="validation" *ngIf="buttonClicked && activityScopeControl.invalid">* {{"Provide_scope_type" | translate}}</p>
+              </div>
+              <div class="col-md-6 col-12">
+                <select-dropdown [disabled]="viewOnly" formControlName="activityToolControl" [config]="toolTypeConfig" [options]="calendarToolTypes"></select-dropdown>
+                <p class="validation" *ngIf="buttonClicked && activityToolControl.invalid">* {{"Provide_tool_type" | translate}}</p>
+              </div>
+              <div class="col-md-6 col-12">
+                <input [readOnly]="viewOnly" type="text" formControlName="activityLocationControl" nbInput fullWidth placeholder="{{'Location' | translate}}" class="size-medium shape-rectangle">
+                <p class="validation"
+                *ngIf="(activityLocationControl.invalid && activityLocationControl.touched) || (buttonClicked && activityLocationControl.invalid)">
+                  * {{"Provide_location" | translate}}</p>
+              </div>
+    
+              <div class="col-md-6 col-12">
+                <select-dropdown [disabled]="viewOnly" formControlName="intPartControl" tabindex="0" [multiple]="true" *ngIf="['INTERNAL', 'EXTERNAL'].includes(activityScopeControl.value?.code)"
+                [options]="calendarInternalParticipants"
+                [config]="internalParticipantsConfig"></select-dropdown>
+                <p class="validation" *ngIf="buttonClicked && intPartControl.invalid">* {{"Provide_participant" | translate}}</p>
+              </div>
+              <div class="col-md-6 col-12">
+                <select-dropdown [disabled]="viewOnly" formControlName="selectedAccControl" tabindex="0" [options]="userAccounts"
+                              [config]="userAccountsConfig" (change)="getNewSelectedAccount($event)"></select-dropdown> 
+                <p class="validation" *ngIf="buttonClicked && selectedAccControl.invalid">* {{"Provide_account" | translate}}</p>
+              </div>
+              <div class="col-md-6 col-12">
+                <select-dropdown [disabled]="viewOnly" formControlName="extPartControl" tabindex="0" [multiple]="true" *ngIf="activityScopeControl.value?.code == 'EXTERNAL'"
+                [options]="calendarExternalParticipants"
+                [config]="externalParticipantsConfig"></select-dropdown>
+              </div>
+              <div class="col-md-6 col-12 text-left m-auto">
+                <nb-checkbox status="basic" [disabled]="today && startDateControl.value && today > startDateControl.value"
+                  formControlName="shareWithAll">{{'SHARE_WITH_ALL_PARTICIPANTS' | translate}}</nb-checkbox>
+              </div>
+              <div class="col-md-6 col-12">
+                <igx-date-picker [disabled]="viewOnly" locale="tr" formControlName="startDateControl" [cancelButtonLabel]="'CLOSE' | translate" [label]="'Start Date'"
+                [hideOutsideDays]="true" id="startDate" [monthsViewNumber]="1" [disabled]="!selectedActivityId" (valueChange)="startDateChange()"></igx-date-picker>
+              </div>
+              <div class="col-md-6 col-12">
+                <igx-date-picker [disabled]="viewOnly" locale="tr" formControlName="endDateControl" [cancelButtonLabel]="'CLOSE' | translate" [monthsViewNumber]="1"
+                  [hideOutsideDays]="true" id="endDate" [label]="'End Date'"></igx-date-picker>
+              </div>
+              <div class="col-md-6 col-12">
+                <igx-time-picker [disabled]="viewOnly" formControlName="startDateControl" id="timepicker1" format="HH:mm" mode="dropdown" (onValueChanged)="startDateChange()"></igx-time-picker>
+              </div>
+              <div class="col-md-6 col-12">
+                <igx-time-picker [disabled]="viewOnly" formControlName="endDateControl" id="timepicker2" format="HH:mm" mode="dropdown"></igx-time-picker>
+              </div>
+              <div class="col">
+                <p class="validation validation2 text-center" *ngIf="!checkTime()" >* {{"Correct_Date" | translate}} </p>
+              </div>
+              <div class="col-md-12 col-12">
+                <angular-editor id="activityEditor" [disabled]="viewOnly" placeholder="{{'Description' | translate}}" formControlName="activityDescControl" [config]="editorConfig"></angular-editor>
+                <p class="validation" *ngIf="(activityDescControl.invalid && activityDescControl.touched) || activityDescControl.invalid && buttonClicked">* {{"Provide_description" | translate}}</p>
+              </div>
+              <div class="col-md-12 col-12">
+                <p *ngIf="!viewOnly && selectedActivity?.activityAttributes?.task">{{'RELATED_TASK_NUMBER' | translate}}: <a href="/pages/task/todo/{{selectedActivity.activityAttributes.task}}">{{selectedActivity.activityAttributes.task}}</a> </p>
+              </div>
+            </div>
+          </form>
+        </nb-card-body>
+        <nb-card-footer>
+          <button nbButton *ngIf="!viewOnly" status="success" (click)="saveActivity()">{{(selectedActivity ? "UPDATE_ACTIVITY" : "CREATE_ACTIVITY") | translate}}</button>
+          <button nbButton *ngIf="!viewOnly && selectedActivity" status="danger" (click)="deleteActivityModal()">{{"DELETE_ACTIVITY" | translate}}</button>
+          <button nbButton *ngIf="selectedActivity" (click)="toggleFlipCard()">{{"NOTES" | translate}}<nb-icon icon="arrow-forward-outline"></nb-icon></button>
+          <button nbButton status='basic' (click)="ref.close()">{{"CLOSE" | translate}}</button>
+        </nb-card-footer>
+      </nb-card>
+    </nb-card-front>
+    <nb-card-back>
+      <nb-card class="dialog calendar text-center mb-0">
+        <nb-card-header><h2> {{'NOTES' | translate}} </h2></nb-card-header>
+        <nb-card-body *ngIf="selectedActivity">
+          <form [formGroup]="noteForm">
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <select-dropdown #dd tabindex="0" [options]="noteTypes" [formControl]="noteForm.get('type')" [config]="noteTypeConfig"></select-dropdown>
+                <p class="validation" *ngIf="buttonClicked && noteForm.get('type').invalid">* {{"REQUIRED" | translate}}</p>
+              </div>
+              <div class="col-md-6 col-12"></div>
+              <div class="col-md-12 col-12 text-left">
+                <angular-editor id="noteEditor" placeholder="{{'Description' | translate}}" [formControl]="noteForm.get('content')" [config]="editorConfig"></angular-editor>
+                <p class="validation" *ngIf="buttonClicked && noteForm.get('content').invalid">* {{"REQUIRED" | translate}}</p>
+              </div>
+              <div class="col-md-12 col-12 mt-10">
+                <button nbButton [disabled]="noteForm.invalid" status="success" (click)="saveNote()">{{(noteForm.get('id').value ? 'UPDATE_NOTE' : 'SAVE_NOTE') | translate}}</button>
+                <button nbButton *ngIf="noteForm.get('id').value" status='danger' (click)="confirmNoteDelete()">{{'DELETE_NOTE' | translate}}</button>
+                <button nbButton *ngIf="noteForm.get('id').value" status='basic' (click)="resetNote()">{{'RESET' | translate}}</button>
+              </div>
+              <hr>
+              <div class="col-md-12 col-12 mt-20 text-left">
+                <accordion [isAnimated]="true" [closeOthers]="true" >
+                  <accordion-group *ngFor="let note of selectedActivity.notes; index as i">
+                    <div accordion-heading>
+                      {{'NOTE' | translate}} {{i+1}} &nbsp;-&nbsp; {{note.createDate | slice: 0: 16}} &nbsp;-&nbsp; {{userList | findInArrayOfObjects: 'username': note.createdBy: 'displayName'}} &nbsp;-&nbsp; {{note.type.code | translate}}
+                      <div style="float: right;">
+                        <button nbButton class="accordion-edit-button" (click)="editNote($event, note)" status='basic'>{{"EDIT" | translate}}</button>
+                      </div>
+                    </div>
+                    <div [innerHTML]="note.content"></div>
+                    <div></div>
+                  </accordion-group>
+                </accordion>
+              </div>
+            </div>
+          </form>
+        </nb-card-body>
+        <nb-card-footer>
+          <button nbButton (click)="toggleFlipCard()"><nb-icon icon="arrow-back-outline"></nb-icon>{{'ACTIVITY_DETAILS' | translate}}</button>
+        </nb-card-footer>
+      </nb-card>
+    </nb-card-back>
+  </nb-flip-card>
+</ng-template>
+<ng-template #noteDeleteDialog let-data let-ref="noteDeleteDialogRef">
+  <nb-card class="text-center">
+    <nb-card-body>
+      <p class="mb-0">{{'DELETE_NOTE_DIALOG_MESSAGE' | translate}}</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button class="mb-0" nbButton status="success" (click)="deleteNote()"><nb-icon icon="checkmark"></nb-icon>{{"DELETE" | translate}}</button>
+      <button class="mb-0" nbButton status="basic" (click)="noteDeleteDialogRef.close()"><nb-icon icon="close"></nb-icon>{{"CLOSE" | translate}}</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+<ngx-dialog #deleteModal (runMethod)="deleteActivity($event)"></ngx-dialog>
+

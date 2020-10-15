@@ -1,0 +1,111 @@
+
+.dd-tree ::ng-deep .dropdown .dropdown-toggle {
+  padding: 10px 8px !important;
+  background: #f7f9fc;
+  border-color: rgb(226, 230, 234);
+  color: rgb(72, 87, 128);
+  font-weight: 400;
+  font-family: Poppins, sans-serif;
+}
+
+.dd-tree ::ng-deep .dropdown .dropdown-toggle:hover{
+  border-color: rgb(226, 230, 234);
+  color: rgb(72, 87, 128);
+  background: #f7f9fc;  
+}
+
+.dd-tree ::ng-deep .dropdown .dropdown-toggle:focus {
+  outline-color: rgb(59, 153, 252);
+  box-shadow: 0 0 0 0;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+.dd-tree ::ng-deep .dropdown .dropdown-toggle:active {
+  outline-color: rgb(59, 153, 252);
+  box-shadow: 0 0 0 0;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+.searh-area .shape-rectangle{
+  margin-bottom: 5px !important;
+}
+
+.back nb-icon{
+  margin-bottom: 20px;
+  font-size: 40px !important;
+}
+
+nb-card.dialog{
+  max-width: 700px;
+
+}
+
+.button-green{
+  background: #3dae2b !important;
+}
+
+::ng-deep .igx-date-picker .igx-calendar__header {
+  background: #00a7e6;
+}
+
+::ng-deep .igx-calendar__date--selected .igx-calendar__date-content {
+    background: #00a7e6;
+}
+
+::ng-deep .igx-calendar__date--selected.igx-calendar__date--current .igx-calendar__date-content {
+  background: #00a7e6;
+}
+
+button.add{
+  background: #3dae2b;
+  color: #fff;
+  padding: 5px 10px 5px 8px;
+  border:1px solid transparent;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+button.add nb-icon.add-icon{
+  font-size: 15px;
+  margin-right: 5px;
+  font-weight: 700;
+}
+
+button.edit{
+  background: #ffaa00;
+  color: #fff;
+  padding: 5px 10px 5px 8px;
+  border:1px solid transparent;
+  border-radius: 3px;
+  float: right;
+}
+button.edit nb-icon.edit-icon{
+  font-size: 15px;
+  margin-right: 5px;
+  font-weight: 700;
+}
+
+button.delete{
+  background: #e74c3c;
+  color: #fff;
+  padding: 5px 10px 5px 8px;
+  border:1px solid transparent;
+  border-radius: 3px;
+  margin-left: 10px;
+  float: right;
+}
+button.delete nb-icon.delete-icon{
+  font-size: 15px;
+  margin-right: 5px;
+  font-weight: 700;
+}
+
+ng-select {
+  padding-bottom: 0px;
+}
+::ng-deep ng-select .ng-dropdown-panel {
+  margin-top: 1.25em !important;
+}
+
+// ::ng-deep ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+//   background-color: #00aef0 !important;
+// }

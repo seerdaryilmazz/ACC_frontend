@@ -1,0 +1,130 @@
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-10" style="margin-top: 40%;">
+    <nb-card-header>
+        <strong *ngIf="selectedOrder">  {{'ORDER_DETAIL'| translate}}</strong>
+    </nb-card-header>
+<nb-card-body *ngIf="selectedOrder">
+    
+    <div class="order-detail">
+     <!--    <table>
+            <tr>
+              <th>{{'ORDER_NO'|translate}}</th>
+              <th>{{'CUSTOMER'|translate}}</th>
+              <th>{{'SERVICE_TYPE'|translate}}</th>
+              <th>{{'READY_DATE'|translate}}</th>
+            </tr>
+            <tr>
+              <td>{{selectedOrder.OrderNo}}</td>
+              <td>{{selectedOrder.CustomerName}}</td>
+              <td>{{selectedOrder.Service}}</td>
+              <td>{{selectedOrder.ReadyDate | date: 'dd.MM.yyyy'}}</td>
+            </tr>
+        </table>      --> 
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'ETA'|translate}}:</strong></p> 
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.EstimatedArrivalTime | date: 'dd.MM.yyyy HH:mm'}}</p>
+            </div>
+        </div>
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'OG'|translate}}:</strong></p> 
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.DueDate | date: 'dd.MM.yyyy HH:mm'}}</p>
+            </div>
+        </div>           
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'ORDER_NO'|translate}}:</strong></p> 
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.OrderNo}}</p>
+            </div>
+        </div>  
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'SENDER'|translate}}:</strong></p> 
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.Sender}}</p>
+            </div>
+        </div>
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'LOADING_LOCATION'|translate}}:</strong></p>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.LoadingCompany}} - {{selectedOrder.LoadingInformation}}</p>
+            </div>
+        </div>
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'RECIPIENT'|translate}}:</strong></p>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.Receiver}}</p>
+            </div>
+        </div>
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'DELIVERY_LOCATION'|translate}}:</strong></p>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.DeliveryCompany}} - {{selectedOrder.DeliveryInformation}}</p>
+            </div>
+        </div>
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'SERVICE_TYPE' | translate}}:</strong></p>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.Service}}</p>
+            </div>
+        </div>
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'PACKAGING_TYPE' | translate}}:</strong></p>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.PackagingType}}</p>
+            </div>
+        </div>
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'GROSS_WEIGHT' | translate}}:</strong></p>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.GrossWeight}} kg</p>
+            </div>
+        </div>
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'VOLUME' | translate}}:</strong></p>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.Volume}} </p>
+            </div>
+        </div>
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'LDM' | translate}}:</strong></p>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.LDM}}</p>
+            </div>
+        </div>
+        <div class="customer-info row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                <p><strong>{{'PW' | translate}}:</strong></p>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                <p>{{selectedOrder.PW}}</p>
+            </div>
+        </div>
+        <hr>
+    </div>
+
+</nb-card-body>
+</nb-card>

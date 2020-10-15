@@ -1,0 +1,106 @@
+<div class="main-title">{{'TODOS' | translate}}</div>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-20 pb-20">
+    <nb-card-body>
+        <div style="float: right;">
+            <button class="add" type="button" (click)="newEventModalOpen()">
+                <nb-icon icon="plus-outline" class="add-icon"></nb-icon>{{'NEW_TODO' | translate}}
+            </button>
+        </div>
+        <div class="back">
+            <nb-icon icon="arrow-ios-back-outline" class="blue-icon" [routerLink]="['/pages/task/task-page']" ></nb-icon>
+        </div>
+        <div class="container">
+            <div class="row mb-30">
+                <div class="table-search searh-area m-auto">
+                    <input #search nbInput fullWidth class="search size-medium shape-rectangle" type="text"
+                        placeholder="{{'SEARCH_INPUT_PLACE_HOLDER'|translate}}" (keyup)="getTodoTasks(search.value)">
+                    <span class="input-group-btn">
+                        <button class="btn" type="button" (click)="getTodoTasks(search.value)">
+                            <nb-action icon="search-outline" class="search-blue-icon"></nb-action>
+                        </button>
+                    </span>
+                </div>
+                <div class="col-md-3 m-auto">
+                    <ngx-date-range-picker [firstDate]="startDateFilter" [secondDate]="endDateFilter" (onChange)="dateFilterChange($event)"></ngx-date-range-picker>
+                </div>
+                <div class="col-md-3 m-auto">
+                    <select-dropdown [(ngModel)]="statusFilter" tabindex="0" [multiple]="true" [options]="taskStatuses"
+                        [config]="statusesFilterConfig" (change)="getTodoTasks()">
+                    </select-dropdown>
+                </div>
+                <div class="col-md-3 m-auto">
+                    <select-dropdown [(ngModel)]="subjectFilter" tabindex="0" [multiple]="true" [options]="taskSubjectOptions"
+                        [config]="subjectsFilterConfig" (change)="getTodoTasks()">
+                    </select-dropdown>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ngx-datatable [data]="todoTasks" (userRowSelect)="userRowSelect($event)" style="cursor:pointer;">
+                <ngx-datatable-column #columns title="NUMBER" value="TaskNumber"></ngx-datatable-column>
+                <ngx-datatable-column #columns title="SUBJECT" value="TaskSubject" [translate]="true"></ngx-datatable-column>
+                <ngx-datatable-column #columns title="CUSTOMER" value="TaskCustomerAccount.AccountName"></ngx-datatable-column>
+                <ngx-datatable-column #columns title="DEADLINE" value="TaskDeadline" dateFormat="dd.MM.yyyy" [sortFunction]="sortDates"></ngx-datatable-column>
+                <ngx-datatable-column #columns title="CREATED_BY" value="TaskCreatedBy.displayName"></ngx-datatable-column>
+                <ngx-datatable-column #columns title="TASK_OWNER" value="TaskOwner.displayName"></ngx-datatable-column>
+                <ngx-datatable-column #columns title="STATUS" value="TaskStatus" [translate]="true"></ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </nb-card-body>
+</nb-card>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <form  [formGroup]="todoTaskForm" >
+        <nb-card class="dialog calendar text-center">
+            <nb-card-header>
+                <h2> {{'ADD_NEW_TODO' | translate}}</h2>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <ng-select [items]="taskSubjectOptions" formControlName="TaskSubject" (change)="onSubjectChange($event)"
+                            [placeholder]="'SELECT_SUBJECT' | translate" appearance="outline" >
+                            <ng-template ng-option-tmp ng-label-tmp let-item="item">
+                                {{ item | translate }}
+                             </ng-template>
+                        </ng-select>
+                        <p class="validation" *ngIf="TaskSubject.invalid && buttonClicked">* {{"REQUIRED" | translate}} </p>
+                    </div>
+                    <div class="col-md-6 col-12 m-auto">
+                        <igx-date-picker #datePicker locale="tr" formControlName="TaskDeadline" label="Deadline" 
+                            [disabled]="TaskSubject?.value?.code == 'SALES_LEAD_REDIRECTING'" (ngModelChange)="onDeadlineChange($event)"
+                            [cancelButtonLabel]="'CLOSE' | translate" [hideOutsideDays]="true" [weekStart]="1" [monthsViewNumber]="1">
+                        </igx-date-picker>
+                        <p class="validation mt-30" *ngIf="TaskDeadline.invalid && buttonClicked">* {{"REQUIRED" | translate}} </p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <ng-select [items]="taskUserAccountOptions | async" [virtualScroll]="true" bindLabel="AccountName" formControlName="TaskCustomerAccount"
+                            [placeholder]="'SELECT_CUSTOMER' | translate" [loading]="accountsLoading" appearance="outline" [minTermLength]="3"
+                            [typeToSearchText]="'3_OR_MORE_CHARS' | translate" [typeahead]="accountInput" (change)="onAccountChange($event)">
+                        </ng-select>
+                        <p class="validation" *ngIf="TaskCustomerAccount.invalid && buttonClicked">* {{"REQUIRED" | translate}} </p>
+                    </div>
+                    <div class="col-md-6 col-12 m-auto">
+                        <div>
+                            <!-- this component does not implements ControlValueAccessor so formControls can not be used -->
+                            <ngx-dropdown-treeview #ddtree class="dd-tree" customDropdowntree [displayValue]="'displayName'" [placeHolder]="'SELECT_USER' | translate"
+                            [config]="usersConfig" (selectedChange)="onUsersChange($event)" [items]="taskUserOptions">
+                            </ngx-dropdown-treeview>
+                        </div>
+                        <p class="validation" *ngIf="TaskOwners.invalid && buttonClicked">* {{"REQUIRED" | translate}} </p>
+                    </div>
+                    <div class="col-md-12 col-12 mt-10">
+                        <angular-editor #editor class="text-editor" placeholder="{{'Description' | translate}}" style="text-align: left;" formControlName="TaskDescription" [config]="descriptionConfig"></angular-editor>
+                        <p class="validation" *ngIf="TaskDescription.invalid && buttonClicked">* {{"Provide_description" | translate}}</p>
+                    </div>
+                </div> 
+            </nb-card-body>
+            <nb-card-footer>
+                <button nbButton [disabled]="editor.textArea.nativeElement.innerText.length<15" (click)="saveTodo()">{{"SAVE" | translate}}</button>
+                <button nbButton (click)="dialogRef.close()">{{"CLOSE" | translate}}</button>
+            </nb-card-footer>
+        </nb-card>
+    </form>
+</ng-template>
+
+<ngx-dialog #informationModal ></ngx-dialog>

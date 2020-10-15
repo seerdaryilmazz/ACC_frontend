@@ -1,0 +1,23 @@
+<nb-card>
+  <div class="row">
+    <div class={{iconWidth}}>
+      <div class="main-icon {{iconClass}} text-center green-bg">
+        <nb-icon icon={{icon}}></nb-icon>
+      </div>
+    </div>
+    <div class={{textWidth}}>
+      <div class="text">
+        <a [routerLink]="[(path)]">
+          <h5 *ngIf="homePage && homePage==true; else renderOther">{{title|translate}}</h5>
+          <ng-template #renderOther>
+            <h6>{{title|translate}}</h6>
+          </ng-template>
+          <nb-icon icon="arrow-forward-outline"></nb-icon>
+        </a>
+      </div>
+      <div class="badge-area">
+        <span class="circle">{{amount}}</span>
+      </div>
+    </div>
+  </div>
+</nb-card>

@@ -1,0 +1,24 @@
+
+
+<div class="main-title"> {{'CALENDAR' | translate}} </div>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-10">
+    <nb-card-body>
+        <div class="row" *ngFor="let alert of alerts">
+            <ngb-alert [type]="alert.type" (close)="close()">{{ alert.msg }}</ngb-alert>
+        </div>
+        <div class="row">
+            <full-calendar *ngIf="selectedLang=='tr-TR'" defaultView="dayGridMonth" [plugins]="calendarPlugins" [events]="calendarEvents" [selectable]="true" [locale]="trLocale"
+            (dateClick)="handleDateClick($event)" (eventClick)="onEventClicked($event)" [editable]="true"></full-calendar>
+            <full-calendar *ngIf="selectedLang=='en-EN'" defaultView="dayGridMonth" [plugins]="calendarPlugins" [events]="calendarEvents" [selectable]="true"
+            (dateClick)="handleDateClick($event)" (eventClick)="onEventClicked($event)" [editable]="true"></full-calendar>
+        </div>
+
+    </nb-card-body>
+</nb-card>
+
+<calendar-event #calendarEventComp (onSaveCalendarEvent)="saveCalendarEvent($event)"
+    (onUpdateCalendarEvent)="updateCalendarEvent($event)" (onDeleteCalendarEvent)="deleteActivity($event)">
+</calendar-event>
+<ngx-dialog #confirmationModal></ngx-dialog>
+<ngx-dialog #informationModal></ngx-dialog>
+

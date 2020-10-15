@@ -1,0 +1,339 @@
+<div class="main-title">{{'ORDERS'|translate}}</div>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-10">
+    <nb-card-body>
+        <div class="row">
+            <div class="searh-area" style="float: left;">
+                <div class="col-md-12">
+                    <label>{{'SEARCH_ORDERS'|translate}}:</label>
+                </div>
+                <div class="col-md-12">
+                    <input type="text" nbInput fullWidth placeholder="" (keyup.enter)="getSpecificOrder()" [(ngModel)]="orderCode" class="size-medium shape-rectangle">
+                    <span class="input-group-btn">
+                      <button class="btn" type="button" (click)="getSpecificOrder()">
+                          <nb-action icon="search-outline" class="search-blue-icon"></nb-action>
+                      </button>
+                    </span>
+                </div>
+                <div class="col-md-12">
+                    <p class="small">*{{'SEARCH_ORDERS_INFO'|translate}}.</p>
+                </div>
+            </div> 
+
+            <div class="siparis-select">
+                <div class="col-md-12">
+                    <label>{{'TIME_PERIOD' | translate}}</label>
+                </div>
+                <div class="col-md-12">
+                    <nb-select placeholder="{{'SELECT_PERIOD' | translate}}" [ngModel]="dateRangeValue" (ngModelChange)="getAllOrdersTypeCount($event)">
+                        <nb-option *ngFor="let dateRange of dateRangeList" [value]="dateRange.value">
+                            {{dateRange.name | translate}}</nb-option>
+                    </nb-select>
+                </div>
+            </div>
+        </div>
+    </nb-card-body>
+    <nb-card-body *ngIf="selectedOrder">
+        <div class="order-detail">
+            <div class="back">
+                <nb-icon icon="arrow-ios-back-outline" class="blue-icon" (click)="selectedOrder=undefined;orderCode=''"></nb-icon>
+            </div>
+            <table>
+                <tr>
+                  <th>{{'ORDER_NO'|translate}}</th>
+                  <th>{{'CUSTOMER'|translate}}</th>
+                  <th>{{'SERVICE_TYPE'|translate}}</th>
+                  <th>{{'READY_DATE'|translate}}</th>
+                </tr>
+                <tr>
+                  <td>{{selectedOrder.OrderNo}}</td>
+                  <td>{{selectedOrder.CustomerName}}</td>
+                  <td [innerHtml]="selectedOrder.Service"></td>
+                  <td>{{selectedOrder.ReadyDate | date: 'dd.MM.yyyy HH:mm'}}</td>
+                </tr>
+            </table>
+            <div class="customer-info row pt-30">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'ETA'|translate}}:</strong></p> 
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.EstimatedArrivalTime | date: 'dd.MM.yyyy HH:mm'}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'OG'|translate}}:</strong></p> 
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.DueDate | date: 'dd.MM.yyyy HH:mm'}}</p>
+                </div>
+            </div>                   
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'SENDER'|translate}}:</strong></p> 
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.Sender}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'LOADING_LOCATION'|translate}}</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.LoadingCompany}} - {{selectedOrder.LoadingInformation}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'RECIPIENT'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.Receiver}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'DELIVERY_LOCATION'|translate}}</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.DeliveryCompany}} - {{selectedOrder.DeliveryInformation}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'SERVICE_TYPE' | translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.ServiceType}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'PACKAGING_TYPE' | translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.PackagingType}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'GROSS_WEIGHT' | translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.GrossWeight}} kg</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'VOLUME' | translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.Volume}} </p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'LDM' | translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.LDM}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-4">
+                    <p><strong>{{'PW' | translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-8">
+                    <p>{{selectedOrder.PW}}</p>
+                </div>
+            </div>
+            <div *ngIf="selectedOrder.Problem || selectedOrder.Delay || selectedOrder.Expense">
+                <button class="danger  mt-20" type="button" (click)="showProblemModal()" *ngIf="selectedOrder.Problem">
+                    <nb-icon icon="alert-triangle-outline"></nb-icon>
+                    {{'ORDER_ADDED_PROBLEM'|translate}}
+                </button>
+                <button class="danger  mt-20" type="button" (click)="showExpenseModal()" *ngIf="selectedOrder.Expense && ['Açık', 'Durum Girişi Yapıldı'].includes(selectedOrder.Expense.ExpenseStatus)">
+                    <nb-icon icon="shuffle-outline"></nb-icon>
+                    {{'ORDER_ADDED_EXTRA_CHARGED'|translate}}
+                </button>
+                <button class="danger  mt-20" type="button" (click)="showDelayModel()" *ngIf="selectedOrder.Delay">
+                    <nb-icon icon="clock-outline"></nb-icon>
+                    {{'DELAYED_ORDER'|translate}}
+                </button>
+            </div>
+            <hr>
+         <!--    <div class="col-12">
+                <div class="row">
+                    <div class="bottom-icon">
+                        <button class="btn" type="button" (click)="open()">
+                        <nb-action icon="message-circle-outline" class="green-icon"></nb-action>
+                        </button>
+                        <button class="btn" type="button">
+                        <nb-action icon="email-outline" class="yellow-icon"></nb-action>
+                        </button>
+                        <button class="btn" type="button">
+                        <nb-action icon="phone-call-outline" class="blue-icon"></nb-action>
+                        </button>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+    </nb-card-body>
+ 
+    <nb-card-body *ngIf="!selectedOrder">    
+        <div class="row pt-30 orders-container">
+            <div class="col-md-6 col-12">
+                <ngx-card title="ACTIVE_ORDERS" icon="navigation-2-outline" iconClass="icon-bg-2" path='/pages/orders/active-orders' amount={{ordersTypeCount.ActiveOrderCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="FINALIZED_ORDERS" icon="checkmark-outline" iconClass="icon-bg-2" path='/pages/orders/finalized-orders' amount={{ordersTypeCount.FinalizedOrderCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="ORDERS_TO_LEAVE" icon="car-outline" iconClass="icon-bg-2" path='/pages/orders/pending-orders' amount={{ordersTypeCount.ToTheRoadOrderCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="ORDERS_ON_THE_ROAD" icon="car-outline" iconClass="icon-bg-2" path='/pages/orders/ontheroad-orders' amount={{ordersTypeCount.OnTheRoadOrderCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="ORDERS_ON_THE_TERMINAL" icon="smartphone-outline" iconClass="icon-bg-2" path='/pages/orders/terminal-orders' amount={{ordersTypeCount.OnTheTerminalOrderCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="ORDERS_DEPARTED_FROM_TERMINAL" icon="corner-down-right-outline" iconClass="icon-bg-2" path='/pages/orders/ontheroadleaving-orders' amount={{ordersTypeCount.OnTheTerminalLeavingCount}}></ngx-card>
+            </div>
+            <div class="col-md-6 col-12">
+                <ngx-card title="ARCHIVED_ORDERS" icon="undo-outline" iconClass="icon-bg-2" path='/pages/orders/archieved-orders' amount={{ordersTypeCount.ArchivedOrderCount}}></ngx-card>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>
+
+<ng-template #problemModal let-data let-ref="dialogRef" style="overflow-y: auto;">
+    <nb-card class="dialog modal-area" #problemModal style="overflow-y: auto;">
+        <nb-card-header>
+            <h6 class="text-center">{{'ORDER_ADDED_PROBLEM_UPPERCASE'|translate}}</h6>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="col-12 mb-30">
+                <div class="customer-info row pt-30">
+                    <div class="col-lg-6 col-md-6 col-sm-4 col-4">
+                        <p class="title"><strong>{{'PROBLEM_DATE'|translate}}:</strong></p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-8 col-8">
+                        <p>{{selectedOrder.Problem.ProblemDate | date: 'dd.MM.yyyy'}}</p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-6 col-md-6 col-sm-4 col-4">
+                        <p class="title"><strong>{{'PROBLEM_TYPE'|translate}}:</strong></p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-8 col-8">
+                        <p>{{selectedOrder.Problem.ProblemType}}</p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-6 col-md-6 col-sm-4 col-4">
+                        <p class="title"><strong>{{'PROBLEM_DETAIL'|translate}}:</strong></p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-8 col-8">
+                        <p>{{selectedOrder.Problem.ProblemDetail}}</p>
+                    </div>
+                </div>
+                <div class="customer-info row">
+                    <div class="col-lg-6 col-md-6 col-sm-4 col-4">
+                        <p class="title"><strong>{{'EXPLANATION'|translate}}:</strong></p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-8 col-8">
+                        <p>{{selectedOrder.Problem.ProblemNote}}</p>
+                    </div>
+                </div>
+                <div class="customer-info row pt-10">
+                    <div class="col-lg-6 col-md-6 col-sm-4 col-4">
+                        <p class="title"><strong>{{'STATUS'|translate}}:</strong></p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-8 col-8">
+                        <p>{{selectedOrder.Problem.ProblemStatus}}</p>
+                    </div>
+                </div>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ng-template #expenseModal let-data let-ref="dialogRef" style="overflow-y: auto;">
+    <nb-card class="dialog modal-area" #expenseModal style="overflow-y: auto;">
+        <nb-card-header>
+            <h6 class="text-center">{{'ORDER_ADDED_EXTRA_CHARGED_UPPERCASE'|translate}}</h6>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="customer-info row pt-30">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                    <p class="title"><strong>{{'COST_DATE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.Expense.ExpenseDate | date: 'dd.MM.yyyy'}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                    <p class="title"><strong>Masrafı Yapan Şirket:</strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.Expense.ExpenseCompany}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                    <p class="title"><strong>{{'EXPLANATION'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.Expense.ExpenseDescription}}</p>
+                </div>
+            </div>
+            <div class="customer-info row pt-10">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                    <p class="title"><strong>Statü:</strong></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.Expense.ExpenseStatus}}</p>
+                </div>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ng-template #delayModal let-data let-ref="dialogRef" style="overflow-y: auto;">
+    <nb-card class="dialog modal-area" style="overflow-y: auto;">
+        <nb-card-header>
+            <h6 class="text-center">{{'DELAYED_ORDER_UPPERCASE'|translate}}</h6>
+        </nb-card-header>
+        <nb-card-body>
+            <div class="customer-info row pt-30">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p class="title"><strong>{{'SERVICE_TYPE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p [innerHtml]="selectedOrder.Delay.Service"></p>
+                </div>
+            </div>        
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p class="title"><strong>{{'DELAY_TYPE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.Delay.DelayType}}</p>
+                </div>
+            </div>
+            <div class="customer-info row">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p class="title"><strong>{{'EXPLANATION'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedOrder.Delay.DelayDescription}}</p>
+                </div>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ngx-dialog #informationModal></ngx-dialog>

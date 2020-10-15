@@ -1,0 +1,167 @@
+<div *ngIf="priorTaskList.length>0" class="main-title-small mt-20">{{'PRIOR_ORDERS'|translate}}
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 pt-20">
+    <nb-card-body>       
+        <div class="order-area">
+            <div style="overflow-x:auto;">
+                <table *ngIf="!showDetail">
+                  <tr>
+                    <th>{{'ORDER_NO'|translate}}</th>
+                    <th>{{'CUSTOMER'|translate}}</th>
+                    <th>{{'TASK_TYPE'|translate}}</th>
+                    <th>{{'DATE'|translate}}</th>
+                    <th></th>
+                  </tr>
+                  <tr *ngFor="let task of priorTaskList">
+                    <td>{{task.OrderNo}}</td>
+                    <td>{{task.CustomerName}}</td>
+                    <td>{{task.Type | translate}}</td>
+                    <td>{{task.Date | date:'dd.MM.yyyy'}}</td>
+                    <td><a (click)="selectedTask = task; showDetail = true;" style="cursor: pointer;"><nb-icon icon="arrow-forward-outline" class="blue-icon"></nb-icon></a></td>
+                  </tr>
+                </table>
+            </div>               
+        </div>
+        <div class="order-detail" *ngIf="showDetail">
+            <div class="back">
+                <nb-icon icon="arrow-ios-back-outline" class="blue-icon" (click)="showDetail=false; selectedTask = undefined"></nb-icon>
+            </div>
+            <table>
+                <tr>
+                    <th>{{'ORDER_NO'|translate}}</th>
+                    <th>{{'CUSTOMER'|translate}}</th>
+                    <th>{{'TASK_TYPE'|translate}}</th>
+                    <th>{{'DATE'|translate}}</th>
+                </tr>
+                <tr style="cursor: pointer;" (click)="showOrderDetailModal()">
+                    <td>{{selectedTask.OrderNo}}</td>
+                    <td>{{selectedTask.CustomerName}}</td>
+                    <td>{{selectedTask.Type | translate}}</td>
+                    <td>{{selectedTask.Date | date:'dd.MM.yyyy'}}</td>
+                </tr>
+            </table>   
+            <div class="customer-info row pt-30" *ngIf="selectedTask.Type=='DELAYED_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'SERVICE_TYPE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p [innerHtml]="selectedTask.Model.Service"></p>
+                </div>
+            </div>        
+            <div class="customer-info row" *ngIf="selectedTask.Type=='DELAYED_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'DELAY_TYPE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.DelayType}}</p>
+                </div>
+            </div>
+            <div class="customer-info row" *ngIf="selectedTask.Type=='DELAYED_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'INTERLOCUTOR' | translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.DelayResponsibility}}</p>
+                </div>
+            </div>
+            <div class="customer-info row" *ngIf="selectedTask.Type=='DELAYED_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'EXPLANATION'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.DelayDescription}}</p>
+                </div>
+            </div>
+
+            <div class="customer-info row pt-30" *ngIf="selectedTask.Type=='PROBLEMATIC_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'PROBLEM_DATE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.ProblemDate | date:'dd.MM.yyyy'}}</p>
+                </div>
+            </div>        
+            <div class="customer-info row" *ngIf="selectedTask.Type=='PROBLEMATIC_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'PROBLEM_TYPE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.ProblemType}}</p>
+                </div>
+            </div>
+            <div class="customer-info row" *ngIf="selectedTask.Type=='PROBLEMATIC_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'PROBLEM_DETAIL'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.ProblemDetail}}</p>
+                </div>
+            </div>
+            <div class="customer-info row" *ngIf="selectedTask.Type=='PROBLEMATIC_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'EXPLANATION' | translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.ProblemNote}}</p>
+                </div>
+            </div>
+            <div class="customer-info row" *ngIf="selectedTask.Type=='PROBLEMATIC_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'STATUS'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.ProblemStatus}}</p>
+                </div>
+            </div>
+
+            <div class="customer-info row pt-30" *ngIf="selectedTask.Type=='EXPENSE_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'COST_DATE'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.ExpenseDate | date:'dd.MM.yyyy'}}</p>
+                </div>
+            </div>        
+            <div class="customer-info row" *ngIf="selectedTask.Type=='EXPENSE_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'EXPENSE_COMPANY'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.ExpenseCompany}}</p>
+                </div>
+            </div>
+            <div class="customer-info row" *ngIf="selectedTask.Type=='EXPENSE_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'EXPLANATION' | translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.ExpenseDescription}}</p>
+                </div>
+            </div>
+            <div class="customer-info row" *ngIf="selectedTask.Type=='EXPENSE_ORDER'">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-4">
+                    <p><strong>{{'STATUS'|translate}}:</strong></p>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8 col-8">
+                    <p>{{selectedTask.Model.ExpenseStatus}}</p>
+                </div>
+            </div>
+            <hr>
+           <!-- <div class="bottom-icon">
+                <button class="btn" type="button">
+                  <nb-action icon="message-circle-outline" class="green-icon"></nb-action>
+                </button>
+                <button class="btn" type="button">
+                  <nb-action icon="email-outline" class="yellow-icon"></nb-action>
+                </button>
+                <button class="btn" type="button">
+                  <nb-action icon="phone-call-outline" class="blue-icon"></nb-action>
+                </button>
+            </div>-->
+        </div>
+    </nb-card-body>
+</nb-card>
+</div>
+
+<ng-template #orderDetailModal let-data let-ref="dialogRef" style="overflow-y: auto;">
+    <specific-order-component #specificOrderComponent [orderCode]="selectedTask.Model.OrderNo"></specific-order-component>
+</ng-template>
